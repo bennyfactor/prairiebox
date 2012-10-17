@@ -26,12 +26,12 @@ public class TwitterMIDlet extends MIDlet {
 	}
 
 	public void startApp() {
-		if (first) {
-			controller.showStart();
-			first = false;
-		} else {
-			controller.showTimeline();
-		}
+//		if (first) {
+//			controller.showStart();
+//			first = false;
+//		} else {
+			controller.startOAuthRequestToken();
+//		}
 	}
 
 	public void pauseApp() {
