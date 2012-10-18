@@ -19,6 +19,10 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
 //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
     private SplashScreen splashScreen;
     private TextBox textBox;
+    private Form form;
+    private StringItem stringItem;
+    private TextField textField;
+    private Command exitCommand;
 //</editor-fold>//GEN-END:|fields|0|
     /**
      * The VisualMIDlet constructor.
@@ -97,16 +101,22 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
      */
     public void commandAction(Command command, Displayable displayable) {//GEN-END:|7-commandAction|0|7-preCommandAction
         // write pre-action user code here
-        if (displayable == splashScreen) {//GEN-BEGIN:|7-commandAction|1|16-preAction
-            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|1|16-preAction
+        if (displayable == form) {//GEN-BEGIN:|7-commandAction|1|26-preAction
+            if (command == exitCommand) {//GEN-END:|7-commandAction|1|26-preAction
                 // write pre-action user code here
-                exitMIDlet();//GEN-LINE:|7-commandAction|2|16-postAction
+                exitMIDlet();//GEN-LINE:|7-commandAction|2|26-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|3|7-postCommandAction
-        }//GEN-END:|7-commandAction|3|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|3|16-preAction
+        } else if (displayable == splashScreen) {
+            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|3|16-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|4|16-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|5|7-postCommandAction
+        }//GEN-END:|7-commandAction|5|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|4|16-postAction
-//</editor-fold>//GEN-END:|7-commandAction|4|16-postAction
+    }//GEN-BEGIN:|7-commandAction|6|
+//</editor-fold>//GEN-END:|7-commandAction|6|
 
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Getter: splashScreen ">//GEN-BEGIN:|14-getter|0|14-preInit
@@ -143,6 +153,72 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
         return textBox;
     }
 //</editor-fold>//GEN-END:|17-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: form ">//GEN-BEGIN:|23-getter|0|23-preInit
+    /**
+     * Returns an initialized instance of form component.
+     *
+     * @return the initialized component instance
+     */
+    public Form getForm() {
+        if (form == null) {//GEN-END:|23-getter|0|23-preInit
+            // write pre-init user code here
+            form = new Form("Login", new Item[]{getStringItem(), getTextField()});//GEN-BEGIN:|23-getter|1|23-postInit
+            form.addCommand(getExitCommand());
+            form.setCommandListener(this);//GEN-END:|23-getter|1|23-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|23-getter|2|
+        return form;
+    }
+//</editor-fold>//GEN-END:|23-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitCommand ">//GEN-BEGIN:|25-getter|0|25-preInit
+    /**
+     * Returns an initialized instance of exitCommand component.
+     *
+     * @return the initialized component instance
+     */
+    public Command getExitCommand() {
+        if (exitCommand == null) {//GEN-END:|25-getter|0|25-preInit
+            // write pre-init user code here
+            exitCommand = new Command("Exit", Command.EXIT, 0);//GEN-LINE:|25-getter|1|25-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|25-getter|2|
+        return exitCommand;
+    }
+//</editor-fold>//GEN-END:|25-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: stringItem ">//GEN-BEGIN:|28-getter|0|28-preInit
+    /**
+     * Returns an initialized instance of stringItem component.
+     *
+     * @return the initialized component instance
+     */
+    public StringItem getStringItem() {
+        if (stringItem == null) {//GEN-END:|28-getter|0|28-preInit
+            // write pre-init user code here
+            stringItem = new StringItem("Connecting to Foursquare", null);//GEN-LINE:|28-getter|1|28-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|28-getter|2|
+        return stringItem;
+    }
+//</editor-fold>//GEN-END:|28-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: textField ">//GEN-BEGIN:|29-getter|0|29-preInit
+    /**
+     * Returns an initialized instance of textField component.
+     *
+     * @return the initialized component instance
+     */
+    public TextField getTextField() {
+        if (textField == null) {//GEN-END:|29-getter|0|29-preInit
+            // write pre-init user code here
+            textField = new TextField("Enter PIN", null, 32, TextField.ANY);//GEN-LINE:|29-getter|1|29-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|29-getter|2|
+        return textField;
+    }
+//</editor-fold>//GEN-END:|29-getter|2|
 
 
 
