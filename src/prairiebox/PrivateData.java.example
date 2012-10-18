@@ -1,0 +1,16 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package prairiebox;
+
+/**
+ *
+ * @author benlamb
+ */
+
+public class PrivateData {
+   public static final String OAUTH_CONSUMER_KEY = "0";
+   public static final String OAUTH_CONSUMER_SECRET = "0";
+ }
+
