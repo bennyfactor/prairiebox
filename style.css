@@ -1,0 +1,65 @@
+
+body {
+	font: 1em Helvetica, Arial, Sans-Serif;
+	text-align: center;
+	color: black;
+	background-color: white;
+	margin-top: 5em;
+}
+
+h1 {
+	font-size: 2em;
+	padding: 0;
+	margin: 0;
+}
+
+h4 {
+	display: none;
+}
+
+form {
+	width: 28em;
+	background-color: #eeeeee;
+	border: 1px solid #cccccc;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 1em;
+}
+
+fieldset {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	color: #336699;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+a:visited {
+	color: #336699;
+}
+
+a:hover {
+	color: #336699;
+}
+
+.error, .success {
+	font-size: 1.2em;
+	font-weight: bold;
+}
+
+.error {
+	color: #ea2001;
+}
+
+.success {
+	color: #99ccff;
+}
+
+.date {
+	color: #ea2001;
+	font-weight: bold;
+}
