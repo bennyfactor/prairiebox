@@ -13,16 +13,21 @@
 	
 </head>
 <body onload="document.getElementById('copybox').focus()">
-
+	<img src="prairiebox.png">
+    <h1>Prairie Box</h1>
+	Foursquare for GPS-enabled JavaME phones
+	<br>
+	<br>
 	<p class="success">
 		Your foursquare authorization token is:
 		<br>
-		<input type="text" id="copybox" value="dummy" onselect="select_text();" onkeyup="select_text();" onclick="select_text();"> 
+		<input type="text" id="copybox" value="ERROR. NO JAVASCRIPT." onselect="select_text();" onkeyup="select_text();" onclick="select_text();"> 
 		<br>
 		ready to be copied to your clipboard
 	</p>
 	<script language="JavaScript" type="text/javascript"> 
 	<!-- 
+		//Highlight copybox
 		function select_text() { 
 			el = document.getElementById('copybox'); 
 			if (el.createTextRange) { 
@@ -36,10 +41,35 @@
 			} 
 			el.focus(); 
 		} 
-		function PageInit() { 
+		
+		//parse URL GET http://papermashup.com/read-url-get-variables-withjavascript/
+		function getUrlVars() {
+		    var vars = {};
+		    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+		        vars[key] = value;
+		    });
+		    return vars;
+		}
+		
+		//token from URL GET
+		function token_get() {
+			textbox = document.getElementById('copybox');
+			token = getUrlVars()["code"];
+			if(null== token)
+			{
+				token = "ERROR. DID NOT GET TOKEN.";
+			}			
+			textbox.value = token;
+		}
+		
+		//init this ish
+		function PageInit() {
+			token_get(); 
 			select_text(); 
 		} 
 		window.onload = PageInit; 
+		
+	
 	//--> 
 	</script>
 	
