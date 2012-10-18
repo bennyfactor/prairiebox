@@ -252,7 +252,7 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
     public Command getItemCommand() {
         if (itemCommand == null) {//GEN-END:|32-getter|0|32-preInit
             // write pre-init user code here
-            itemCommand = new Command("Item", Command.ITEM, 0);//GEN-LINE:|32-getter|1|32-postInit
+            itemCommand = new Command("Authenticate", Command.ITEM, 0);//GEN-LINE:|32-getter|1|32-postInit
             // write post-init user code here
 
         }//GEN-BEGIN:|32-getter|2|
@@ -317,15 +317,14 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
     */
 			
 
- public void Auth24sq() {
-     
-                 try {
-         
-                platformRequest("https://foursquare.com/oauth2/authenticate?client_id=" + PrivateData.OAUTH_CONSUMER_KEY + "&response_type=code&redirect_uri=https://github.com/bennyfactor/prairiebox");
-            } catch (ConnectionNotFoundException ex) {
-                System.out.println(ex);
-            } 
-     
- }
+    public void Auth24sq() {
+
+        try {
+            platformRequest("https://foursquare.com/oauth2/authenticate?client_id=" + PrivateData.OAUTH_CONSUMER_KEY + "&response_type=code&redirect_uri=" + PrivateData.REDIR_CALLBACK_URL);
+        } catch (ConnectionNotFoundException ex) {
+            System.out.println(ex);
+        }
+
+    }
   
 }
