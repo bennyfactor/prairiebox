@@ -14,7 +14,7 @@ import org.netbeans.microedition.lcdui.pda.FileBrowser;
  * @author benlamb
  */
 public class VisualMIDlet extends MIDlet implements CommandListener {
-    
+    public String winner = "oops";
     private boolean midletPaused = false;
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
@@ -57,6 +57,11 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
         httptest get = new httptest();
         try { get.getBirthdayFromNameUsingGet("benny"); }
         catch (IOException e) {System.out.println("IOException " + e.toString());}
+        //
+        
+        // httpS test
+        httpStest sec = new httpStest();
+        winner = sec.run();
         //
         
         switchDisplayable(null, getSplashScreen());//GEN-LINE:|3-startMIDlet|1|3-postAction
@@ -205,7 +210,7 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
     public StringItem getStringItem() {
         if (stringItem == null) {//GEN-END:|28-getter|0|28-preInit
             // write pre-init user code here
-            stringItem = new StringItem("Connecting to Foursquare", null);//GEN-LINE:|28-getter|1|28-postInit
+            stringItem = new StringItem("Connecting to Foursquare", winner);//GEN-LINE:|28-getter|1|28-postInit
             // write post-init user code here
         }//GEN-BEGIN:|28-getter|2|
         return stringItem;
