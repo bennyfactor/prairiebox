@@ -4,6 +4,7 @@
  */
 package prairiebox;
 
+import java.io.IOException;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import org.netbeans.microedition.lcdui.SplashScreen;
@@ -51,6 +52,13 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
      */
     public void startMIDlet() {//GEN-END:|3-startMIDlet|0|3-preAction
         // write pre-action user code here
+        
+        // http test
+        httptest get = new httptest();
+        try { get.getBirthdayFromNameUsingGet("benny"); }
+        catch (IOException e) {System.out.println("IOException " + e.toString());}
+        //
+        
         switchDisplayable(null, getSplashScreen());//GEN-LINE:|3-startMIDlet|1|3-postAction
         // write post-action user code here
     }//GEN-BEGIN:|3-startMIDlet|2|
