@@ -5,10 +5,12 @@
 package prairiebox;
 
 import java.io.IOException;
+import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import org.netbeans.microedition.lcdui.SplashScreen;
 import org.netbeans.microedition.lcdui.pda.FileBrowser;
+import prairiebox.PrivateData;
 
 /**
  * @author benlamb
@@ -24,6 +26,7 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
     private StringItem stringItem;
     private TextField textField;
     private Command exitCommand;
+    private Command itemCommand;
 //</editor-fold>//GEN-END:|fields|0|
     /**
      * The VisualMIDlet constructor.
@@ -56,8 +59,9 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
         // http test
         httptest get = new httptest();
         try { get.getBirthdayFromNameUsingGet("benny"); }
-        catch (IOException e) {System.out.println("IOException " + e.toString());}
+        catch (IOException e) {System.out.println("IOException " + e.toString());}       
         //
+        
         
         // httpS test
         httpStest sec = new httpStest();
@@ -119,17 +123,22 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
                 // write pre-action user code here
                 exitMIDlet();//GEN-LINE:|7-commandAction|2|26-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|3|16-preAction
-        } else if (displayable == splashScreen) {
-            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|3|16-preAction
+            } else if (command == itemCommand) {//GEN-LINE:|7-commandAction|3|33-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|4|16-postAction
+//GEN-LINE:|7-commandAction|4|33-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|5|7-postCommandAction
-        }//GEN-END:|7-commandAction|5|7-postCommandAction
+                Auth24sq();
+            }//GEN-BEGIN:|7-commandAction|5|16-preAction
+        } else if (displayable == splashScreen) {
+            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|5|16-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|6|16-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|7|7-postCommandAction
+        }//GEN-END:|7-commandAction|7|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|6|
-//</editor-fold>//GEN-END:|7-commandAction|6|
+    }//GEN-BEGIN:|7-commandAction|8|
+//</editor-fold>//GEN-END:|7-commandAction|8|
 
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Getter: splashScreen ">//GEN-BEGIN:|14-getter|0|14-preInit
@@ -178,6 +187,7 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
             // write pre-init user code here
             form = new Form("Login", new Item[]{getStringItem(), getTextField()});//GEN-BEGIN:|23-getter|1|23-postInit
             form.addCommand(getExitCommand());
+            form.addCommand(getItemCommand());
             form.setCommandListener(this);//GEN-END:|23-getter|1|23-postInit
             // write post-init user code here
         }//GEN-BEGIN:|23-getter|2|
@@ -233,6 +243,23 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
     }
 //</editor-fold>//GEN-END:|29-getter|2|
 
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand ">//GEN-BEGIN:|32-getter|0|32-preInit
+    /**
+     * Returns an initialized instance of itemCommand component.
+     *
+     * @return the initialized component instance
+     */
+    public Command getItemCommand() {
+        if (itemCommand == null) {//GEN-END:|32-getter|0|32-preInit
+            // write pre-init user code here
+            itemCommand = new Command("Item", Command.ITEM, 0);//GEN-LINE:|32-getter|1|32-postInit
+            // write post-init user code here
+
+        }//GEN-BEGIN:|32-getter|2|
+        return itemCommand;
+    }
+//</editor-fold>//GEN-END:|32-getter|2|
+
 
 
     /**
@@ -282,4 +309,23 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
      */
     public void destroyApp(boolean unconditional) {
     }
+
+   /**
+    * Authenticate to Foursquare
+    * 
+    *  This will eventually call up a mini browser screen to authenticate to foursquare
+    */
+			
+
+ public void Auth24sq() {
+     
+                 try {
+         
+                platformRequest("https://foursquare.com/oauth2/authenticate?client_id=" + PrivateData.OAUTH_CONSUMER_KEY + "&response_type=code&redirect_uri=https://github.com/bennyfactor/prairiebox");
+            } catch (ConnectionNotFoundException ex) {
+                System.out.println(ex);
+            } 
+     
+ }
+  
 }

@@ -14,7 +14,7 @@ import java.io.*;
 
 import javax.microedition.io.*;
 import javax.microedition.pki.*;
-
+import javax.microedition.midlet.MIDlet;
 
 public final class  httpStest {
 
@@ -22,6 +22,7 @@ public final class  httpStest {
         String returnval;
         String url;
         url = "https://google.com";
+         
     try {
       // Query the server and retrieve the response.
       HttpsConnection hc = (HttpsConnection)Connector.open(url);
@@ -30,7 +31,7 @@ public final class  httpStest {
       SecurityInfo si = hc.getSecurityInfo();
       Certificate c = si.getServerCertificate();
       String subject = c.getSubject();
-
+      
       String s = "Server certificate subject: \n" + subject;
       System.out.println(s);
 
