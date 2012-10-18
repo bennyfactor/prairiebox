@@ -21,9 +21,9 @@ import com.substanceofcode.twitter.Settings;
 import com.substanceofcode.utils.Log;
 
 public class TwitterConsumer extends Consumer {
-	public static final String REQUEST_TOKEN_URL = "https://api.twitter.com/oauth/request_token";
-	public static final String ACCESS_TOKEN_URL = "https://api.twitter.com/oauth/access_token";
-	public static final String AUTHORIZE_URL = "https://api.twitter.com/oauth/authorize";
+	public static final String REQUEST_TOKEN_URL = "https://foursquare.com/oauth2/request_token";
+	public static final String ACCESS_TOKEN_URL = "https://foursquare.com/oauth2/access_token";
+	public static final String AUTHORIZE_URL = "https://foursquare.com/oauth2/authorize";
 
 	private RequestToken requestToken;
 	private AccessToken accessToken;
