@@ -36,11 +36,11 @@ public final class  httpStest {
       System.out.println(s);
 
       hc.close();
-      returnval = "Dude let's get lit and jump off my roof";
+      returnval = "Ready. Able to make https connections.";
     }
     catch (IOException ioe) {
-      //System.out.println("HTTPS Exception" + ioe.toString());
-      returnval = "error 2393 haxxors haev stoeln yuor megahurtz";
+      System.out.println("HTTPS Exception" + ioe.toString());
+      returnval = "Error. Unable to make https connections.";
     }
     return(returnval);
          
