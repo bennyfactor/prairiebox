@@ -14,25 +14,28 @@ import org.netbeans.microedition.lcdui.SplashScreen;
  * @author benlamb
  */
 public class PrairieBox extends MIDlet implements CommandListener, ItemCommandListener {
-    public String winner = "oops";
-    private boolean midletPaused = false;
 
+    public String httpstatus = "undefined error";
+    private boolean midletPaused = false;
 //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
     private SplashScreen splashScreen;
     private Form authScreen;
     private TextField tokenField;
     private StringItem connectionstatusItem;
     private StringItem savetokenButton;
-    private Spacer authScreenSpacer1;
-    private Spacer authScreenSpacer2;
     private StringItem authScreenExplainer;
+    private Spacer authScreenSpacer2;
+    private Spacer authScreenSpacer1;
     private Alert badTokenAlert;
-    private Alert debug;
+    private Form form;
+    private StringItem stringItem;
     private Command exitCommand;
     private Command authpopupCommand;
     private Command savetokenCommand;
     private Command okCommand;
+    private Command exitCommand1;
 //</editor-fold>//GEN-END:|fields|0|
+
     /**
      * The PrairieBox constructor.
      */
@@ -60,19 +63,22 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
      */
     public void startMIDlet() {//GEN-END:|3-startMIDlet|0|3-preAction
         // write pre-action user code here
-        
+
         // http test
         httptest get = new httptest();
-        try { get.getBirthdayFromNameUsingGet("benny"); }
-        catch (IOException e) {System.out.println("IOException " + e.toString());}       
+        try {
+            get.getBirthdayFromNameUsingGet("benny");
+        } catch (IOException e) {
+            System.out.println("IOException " + e.toString());
+        }
         //
-        
-        
+
+
         // httpS test
         httpStest sec = new httpStest();
-        winner = sec.run();
+        httpstatus = sec.run();
         //
-        
+
         switchDisplayable(null, getSplashScreen());//GEN-LINE:|3-startMIDlet|1|3-postAction
         // write post-action user code here
     }//GEN-BEGIN:|3-startMIDlet|2|
@@ -139,17 +145,23 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                 // write pre-action user code here
                 switchDisplayable(null, getAuthScreen());//GEN-LINE:|7-commandAction|6|57-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|7|16-preAction
-        } else if (displayable == splashScreen) {
-            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|7|16-preAction
+            }//GEN-BEGIN:|7-commandAction|7|90-preAction
+        } else if (displayable == form) {
+            if (command == exitCommand1) {//GEN-END:|7-commandAction|7|90-preAction
                 // write pre-action user code here
-                verifyToken();//GEN-LINE:|7-commandAction|8|16-postAction
+                exitMIDlet();//GEN-LINE:|7-commandAction|8|90-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|9|7-postCommandAction
-        }//GEN-END:|7-commandAction|9|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|9|16-preAction
+        } else if (displayable == splashScreen) {
+            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|9|16-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getAuthScreen());//GEN-LINE:|7-commandAction|10|16-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|11|7-postCommandAction
+        }//GEN-END:|7-commandAction|11|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|10|
-//</editor-fold>//GEN-END:|7-commandAction|10|
+    }//GEN-BEGIN:|7-commandAction|12|
+//</editor-fold>//GEN-END:|7-commandAction|12|
 
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Getter: splashScreen ">//GEN-BEGIN:|14-getter|0|14-preInit
@@ -170,8 +182,6 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         return splashScreen;
     }
 //</editor-fold>//GEN-END:|14-getter|2|
-
-
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Getter: authScreen ">//GEN-BEGIN:|23-getter|0|23-preInit
     /**
@@ -217,7 +227,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     public StringItem getConnectionstatusItem() {
         if (connectionstatusItem == null) {//GEN-END:|28-getter|0|28-preInit
             // write pre-init user code here
-            connectionstatusItem = new StringItem("Status: ", winner);//GEN-LINE:|28-getter|1|28-postInit
+            connectionstatusItem = new StringItem("Status: ", httpstatus);//GEN-LINE:|28-getter|1|28-postInit
             // write post-init user code here
         }//GEN-BEGIN:|28-getter|2|
         return connectionstatusItem;
@@ -309,6 +319,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
             // write pre-init user code here
             savetokenCommand = new Command("Save", "Save Token", Command.ITEM, 0);//GEN-LINE:|50-getter|1|50-postInit
             // write post-init user code here
+
         }//GEN-BEGIN:|50-getter|2|
         return savetokenCommand;
     }
@@ -371,7 +382,8 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     public Alert getBadTokenAlert() {
         if (badTokenAlert == null) {//GEN-END:|55-getter|0|55-preInit
             // write pre-init user code here
-            badTokenAlert = new Alert("alert", "Error: The authorization token is malformed or invalid. Please try entering a fresh token.", null, null);//GEN-BEGIN:|55-getter|1|55-postInit
+            String badtokenalertmsg = "Error: The authorization token is malformed or invalid. Please try entering a fresh token." + tokenField.getString();
+            badTokenAlert = new Alert("alert", badtokenalertmsg, null, null);//GEN-BEGIN:|55-getter|1|55-postInit
             badTokenAlert.addCommand(getOkCommand());
             badTokenAlert.setCommandListener(this);
             badTokenAlert.setTimeout(Alert.FOREVER);//GEN-END:|55-getter|1|55-postInit
@@ -403,9 +415,11 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
      */
     public void verifyToken() {//GEN-END:|59-if|0|59-preIf
         // enter pre-if user code here
-        if (false) {//GEN-LINE:|59-if|1|60-preAction
+        boolean tokenValid;
+        tokenValid = oauthstore.isTokenValid(tokenField.getString());
+        if (tokenValid) {//GEN-LINE:|59-if|1|60-preAction
             // write pre-action user code here
-//GEN-LINE:|59-if|2|60-postAction
+            switchDisplayable(null, getForm());//GEN-LINE:|59-if|2|60-postAction
             // write post-action user code here
         } else {//GEN-LINE:|59-if|3|61-preAction
             // write pre-action user code here
@@ -416,24 +430,63 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     }//GEN-BEGIN:|59-if|6|
 //</editor-fold>//GEN-END:|59-if|6|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: debug ">//GEN-BEGIN:|69-getter|0|69-preInit
+
+
+
+
+
+
+
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: form ">//GEN-BEGIN:|86-getter|0|86-preInit
     /**
-     * Returns an initialized instance of debug component.
+     * Returns an initialized instance of form component.
      *
      * @return the initialized component instance
      */
-    public Alert getDebug() {
-        if (debug == null) {//GEN-END:|69-getter|0|69-preInit
+    public Form getForm() {
+        if (form == null) {//GEN-END:|86-getter|0|86-preInit
             // write pre-init user code here
-            debug = new Alert("alert");//GEN-BEGIN:|69-getter|1|69-postInit
-            debug.setTimeout(Alert.FOREVER);//GEN-END:|69-getter|1|69-postInit
+            form = new Form("Main Menu", new Item[]{getStringItem()});//GEN-BEGIN:|86-getter|1|86-postInit
+            form.addCommand(getExitCommand1());
+            form.setCommandListener(this);//GEN-END:|86-getter|1|86-postInit
             // write post-init user code here
-        }//GEN-BEGIN:|69-getter|2|
-        return debug;
+        }//GEN-BEGIN:|86-getter|2|
+        return form;
     }
-//</editor-fold>//GEN-END:|69-getter|2|
+//</editor-fold>//GEN-END:|86-getter|2|
 
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: stringItem ">//GEN-BEGIN:|88-getter|0|88-preInit
+    /**
+     * Returns an initialized instance of stringItem component.
+     *
+     * @return the initialized component instance
+     */
+    public StringItem getStringItem() {
+        if (stringItem == null) {//GEN-END:|88-getter|0|88-preInit
+            // write pre-init user code here
+            stringItem = new StringItem("stringItem", PrivateData.debugmsg);//GEN-LINE:|88-getter|1|88-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|88-getter|2|
+        return stringItem;
+    }
+//</editor-fold>//GEN-END:|88-getter|2|
 
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitCommand1 ">//GEN-BEGIN:|89-getter|0|89-preInit
+    /**
+     * Returns an initialized instance of exitCommand1 component.
+     *
+     * @return the initialized component instance
+     */
+    public Command getExitCommand1() {
+        if (exitCommand1 == null) {//GEN-END:|89-getter|0|89-preInit
+            // write pre-init user code here
+            exitCommand1 = new Command("Exit", Command.EXIT, 0);//GEN-LINE:|89-getter|1|89-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|89-getter|2|
+        return exitCommand1;
+    }
+//</editor-fold>//GEN-END:|89-getter|2|
 
     /**
      * Returns a display instance.
@@ -483,13 +536,12 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     public void destroyApp(boolean unconditional) {
     }
 
-   /**
-    * Authenticate to Foursquare
-    * 
-    *  This will eventually call up a mini browser screen to authenticate to foursquare
-    */
-			
-
+    /**
+     * Authenticate to Foursquare
+     *
+     * This will eventually call up a mini browser screen to authenticate to
+     * foursquare
+     */
     public void Auth24sq() {
 
         try {
@@ -499,5 +551,4 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         }
 
     }
-  
 }
