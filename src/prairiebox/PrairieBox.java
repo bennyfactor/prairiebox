@@ -6,27 +6,32 @@ package prairiebox;
 
 import java.io.IOException;
 import javax.microedition.io.ConnectionNotFoundException;
-import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
+import javax.microedition.midlet.*;
 import org.netbeans.microedition.lcdui.SplashScreen;
-import org.netbeans.microedition.lcdui.pda.FileBrowser;
-import prairiebox.PrivateData;
 
 /**
  * @author benlamb
  */
-public class PrairieBox extends MIDlet implements CommandListener {
+public class PrairieBox extends MIDlet implements CommandListener, ItemCommandListener {
     public String winner = "oops";
     private boolean midletPaused = false;
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
     private SplashScreen splashScreen;
-    private TextBox textBox;
-    private Form form;
-    private StringItem stringItem;
-    private TextField textField;
+    private Form authScreen;
+    private TextField tokenField;
+    private StringItem connectionstatusItem;
+    private StringItem savetokenButton;
+    private Spacer authScreenSpacer1;
+    private Spacer authScreenSpacer2;
+    private StringItem authScreenExplainer;
+    private Alert badTokenAlert;
+    private Alert debug;
     private Command exitCommand;
-    private Command itemCommand;
+    private Command authpopupCommand;
+    private Command savetokenCommand;
+    private Command okCommand;
 //</editor-fold>//GEN-END:|fields|0|
     /**
      * The PrairieBox constructor.
@@ -118,27 +123,33 @@ public class PrairieBox extends MIDlet implements CommandListener {
      */
     public void commandAction(Command command, Displayable displayable) {//GEN-END:|7-commandAction|0|7-preCommandAction
         // write pre-action user code here
-        if (displayable == form) {//GEN-BEGIN:|7-commandAction|1|26-preAction
-            if (command == exitCommand) {//GEN-END:|7-commandAction|1|26-preAction
+        if (displayable == authScreen) {//GEN-BEGIN:|7-commandAction|1|33-preAction
+            if (command == authpopupCommand) {//GEN-END:|7-commandAction|1|33-preAction
                 // write pre-action user code here
-                exitMIDlet();//GEN-LINE:|7-commandAction|2|26-postAction
-                // write post-action user code here
-            } else if (command == itemCommand) {//GEN-LINE:|7-commandAction|3|33-preAction
-                // write pre-action user code here
-//GEN-LINE:|7-commandAction|4|33-postAction
+//GEN-LINE:|7-commandAction|2|33-postAction
                 // write post-action user code here
                 Auth24sq();
-            }//GEN-BEGIN:|7-commandAction|5|16-preAction
-        } else if (displayable == splashScreen) {
-            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|5|16-preAction
+            } else if (command == exitCommand) {//GEN-LINE:|7-commandAction|3|26-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getForm());//GEN-LINE:|7-commandAction|6|16-postAction
+                exitMIDlet();//GEN-LINE:|7-commandAction|4|26-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|7|7-postCommandAction
-        }//GEN-END:|7-commandAction|7|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|5|57-preAction
+        } else if (displayable == badTokenAlert) {
+            if (command == okCommand) {//GEN-END:|7-commandAction|5|57-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getAuthScreen());//GEN-LINE:|7-commandAction|6|57-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|7|16-preAction
+        } else if (displayable == splashScreen) {
+            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|7|16-preAction
+                // write pre-action user code here
+                verifyToken();//GEN-LINE:|7-commandAction|8|16-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|9|7-postCommandAction
+        }//GEN-END:|7-commandAction|9|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|8|
-//</editor-fold>//GEN-END:|7-commandAction|8|
+    }//GEN-BEGIN:|7-commandAction|10|
+//</editor-fold>//GEN-END:|7-commandAction|10|
 
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Getter: splashScreen ">//GEN-BEGIN:|14-getter|0|14-preInit
@@ -151,7 +162,7 @@ public class PrairieBox extends MIDlet implements CommandListener {
         if (splashScreen == null) {//GEN-END:|14-getter|0|14-preInit
             // write pre-init user code here
             splashScreen = new SplashScreen(getDisplay());//GEN-BEGIN:|14-getter|1|14-postInit
-            splashScreen.setTitle("splashScreen");
+            splashScreen.setTitle("Prairie Box");
             splashScreen.setCommandListener(this);
             splashScreen.setText("Prairie Box");//GEN-END:|14-getter|1|14-postInit
             // write post-init user code here
@@ -160,38 +171,24 @@ public class PrairieBox extends MIDlet implements CommandListener {
     }
 //</editor-fold>//GEN-END:|14-getter|2|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: textBox ">//GEN-BEGIN:|17-getter|0|17-preInit
-    /**
-     * Returns an initialized instance of textBox component.
-     *
-     * @return the initialized component instance
-     */
-    public TextBox getTextBox() {
-        if (textBox == null) {//GEN-END:|17-getter|0|17-preInit
-            // write pre-init user code here
-            textBox = new TextBox("textBox", null, 100, TextField.ANY);//GEN-LINE:|17-getter|1|17-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|17-getter|2|
-        return textBox;
-    }
-//</editor-fold>//GEN-END:|17-getter|2|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: form ">//GEN-BEGIN:|23-getter|0|23-preInit
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: authScreen ">//GEN-BEGIN:|23-getter|0|23-preInit
     /**
-     * Returns an initialized instance of form component.
+     * Returns an initialized instance of authScreen component.
      *
      * @return the initialized component instance
      */
-    public Form getForm() {
-        if (form == null) {//GEN-END:|23-getter|0|23-preInit
+    public Form getAuthScreen() {
+        if (authScreen == null) {//GEN-END:|23-getter|0|23-preInit
             // write pre-init user code here
-            form = new Form("Login", new Item[]{getStringItem(), getTextField()});//GEN-BEGIN:|23-getter|1|23-postInit
-            form.addCommand(getExitCommand());
-            form.addCommand(getItemCommand());
-            form.setCommandListener(this);//GEN-END:|23-getter|1|23-postInit
+            authScreen = new Form("Login", new Item[]{getConnectionstatusItem(), getTokenField(), getAuthScreenSpacer1(), getSavetokenButton(), getAuthScreenSpacer2(), getAuthScreenExplainer()});//GEN-BEGIN:|23-getter|1|23-postInit
+            authScreen.addCommand(getExitCommand());
+            authScreen.addCommand(getAuthpopupCommand());
+            authScreen.setCommandListener(this);//GEN-END:|23-getter|1|23-postInit
             // write post-init user code here
         }//GEN-BEGIN:|23-getter|2|
-        return form;
+        return authScreen;
     }
 //</editor-fold>//GEN-END:|23-getter|2|
 
@@ -211,54 +208,230 @@ public class PrairieBox extends MIDlet implements CommandListener {
     }
 //</editor-fold>//GEN-END:|25-getter|2|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: stringItem ">//GEN-BEGIN:|28-getter|0|28-preInit
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: connectionstatusItem ">//GEN-BEGIN:|28-getter|0|28-preInit
     /**
-     * Returns an initialized instance of stringItem component.
+     * Returns an initialized instance of connectionstatusItem component.
      *
      * @return the initialized component instance
      */
-    public StringItem getStringItem() {
-        if (stringItem == null) {//GEN-END:|28-getter|0|28-preInit
+    public StringItem getConnectionstatusItem() {
+        if (connectionstatusItem == null) {//GEN-END:|28-getter|0|28-preInit
             // write pre-init user code here
-            stringItem = new StringItem("Connecting to Foursquare", winner);//GEN-LINE:|28-getter|1|28-postInit
+            connectionstatusItem = new StringItem("Status: ", winner);//GEN-LINE:|28-getter|1|28-postInit
             // write post-init user code here
         }//GEN-BEGIN:|28-getter|2|
-        return stringItem;
+        return connectionstatusItem;
     }
 //</editor-fold>//GEN-END:|28-getter|2|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: textField ">//GEN-BEGIN:|29-getter|0|29-preInit
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: tokenField ">//GEN-BEGIN:|29-getter|0|29-preInit
     /**
-     * Returns an initialized instance of textField component.
+     * Returns an initialized instance of tokenField component.
      *
      * @return the initialized component instance
      */
-    public TextField getTextField() {
-        if (textField == null) {//GEN-END:|29-getter|0|29-preInit
+    public TextField getTokenField() {
+        if (tokenField == null) {//GEN-END:|29-getter|0|29-preInit
             // write pre-init user code here
-            textField = new TextField("Enter Token", null, 64, TextField.ANY);//GEN-LINE:|29-getter|1|29-postInit
+            tokenField = new TextField("Enter Token", "", 64, TextField.ANY);//GEN-LINE:|29-getter|1|29-postInit
             // write post-init user code here
         }//GEN-BEGIN:|29-getter|2|
-        return textField;
+        return tokenField;
     }
 //</editor-fold>//GEN-END:|29-getter|2|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: itemCommand ">//GEN-BEGIN:|32-getter|0|32-preInit
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: authpopupCommand ">//GEN-BEGIN:|32-getter|0|32-preInit
     /**
-     * Returns an initialized instance of itemCommand component.
+     * Returns an initialized instance of authpopupCommand component.
      *
      * @return the initialized component instance
      */
-    public Command getItemCommand() {
-        if (itemCommand == null) {//GEN-END:|32-getter|0|32-preInit
+    public Command getAuthpopupCommand() {
+        if (authpopupCommand == null) {//GEN-END:|32-getter|0|32-preInit
             // write pre-init user code here
-            itemCommand = new Command("Authorize", Command.ITEM, 0);//GEN-LINE:|32-getter|1|32-postInit
+            authpopupCommand = new Command("Authorize", Command.ITEM, 0);//GEN-LINE:|32-getter|1|32-postInit
             // write post-init user code here
 
         }//GEN-BEGIN:|32-getter|2|
-        return itemCommand;
+        return authpopupCommand;
     }
 //</editor-fold>//GEN-END:|32-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: savetokenButton ">//GEN-BEGIN:|49-getter|0|49-preInit
+    /**
+     * Returns an initialized instance of savetokenButton component.
+     *
+     * @return the initialized component instance
+     */
+    public StringItem getSavetokenButton() {
+        if (savetokenButton == null) {//GEN-END:|49-getter|0|49-preInit
+            // write pre-init user code here
+            savetokenButton = new StringItem("", "Save Token", Item.BUTTON);//GEN-BEGIN:|49-getter|1|49-postInit
+            savetokenButton.addCommand(getSavetokenCommand());
+            savetokenButton.setItemCommandListener(this);
+            savetokenButton.setLayout(ImageItem.LAYOUT_CENTER | ImageItem.LAYOUT_NEWLINE_BEFORE | Item.LAYOUT_SHRINK | Item.LAYOUT_VSHRINK | Item.LAYOUT_2);
+            savetokenButton.setPreferredSize(-1, -1);//GEN-END:|49-getter|1|49-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|49-getter|2|
+        return savetokenButton;
+    }
+//</editor-fold>//GEN-END:|49-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Method: commandAction for Items ">//GEN-BEGIN:|8-itemCommandAction|0|8-preItemCommandAction
+    /**
+     * Called by a system to indicated that a command has been invoked on a
+     * particular item.
+     *
+     * @param command the Command that was invoked
+     * @param displayable the Item where the command was invoked
+     */
+    public void commandAction(Command command, Item item) {//GEN-END:|8-itemCommandAction|0|8-preItemCommandAction
+        // write pre-action user code here
+        if (item == savetokenButton) {//GEN-BEGIN:|8-itemCommandAction|1|51-preAction
+            if (command == savetokenCommand) {//GEN-END:|8-itemCommandAction|1|51-preAction
+                // write pre-action user code here
+                verifyToken();//GEN-LINE:|8-itemCommandAction|2|51-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|8-itemCommandAction|3|8-postItemCommandAction
+        }//GEN-END:|8-itemCommandAction|3|8-postItemCommandAction
+        // write post-action user code here
+    }//GEN-BEGIN:|8-itemCommandAction|4|
+//</editor-fold>//GEN-END:|8-itemCommandAction|4|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: savetokenCommand ">//GEN-BEGIN:|50-getter|0|50-preInit
+    /**
+     * Returns an initialized instance of savetokenCommand component.
+     *
+     * @return the initialized component instance
+     */
+    public Command getSavetokenCommand() {
+        if (savetokenCommand == null) {//GEN-END:|50-getter|0|50-preInit
+            // write pre-init user code here
+            savetokenCommand = new Command("Save", "Save Token", Command.ITEM, 0);//GEN-LINE:|50-getter|1|50-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|50-getter|2|
+        return savetokenCommand;
+    }
+//</editor-fold>//GEN-END:|50-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: authScreenSpacer1 ">//GEN-BEGIN:|52-getter|0|52-preInit
+    /**
+     * Returns an initialized instance of authScreenSpacer1 component.
+     *
+     * @return the initialized component instance
+     */
+    public Spacer getAuthScreenSpacer1() {
+        if (authScreenSpacer1 == null) {//GEN-END:|52-getter|0|52-preInit
+            // write pre-init user code here
+            authScreenSpacer1 = new Spacer(16, 20);//GEN-LINE:|52-getter|1|52-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|52-getter|2|
+        return authScreenSpacer1;
+    }
+//</editor-fold>//GEN-END:|52-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: authScreenSpacer2 ">//GEN-BEGIN:|53-getter|0|53-preInit
+    /**
+     * Returns an initialized instance of authScreenSpacer2 component.
+     *
+     * @return the initialized component instance
+     */
+    public Spacer getAuthScreenSpacer2() {
+        if (authScreenSpacer2 == null) {//GEN-END:|53-getter|0|53-preInit
+            // write pre-init user code here
+            authScreenSpacer2 = new Spacer(16, 40);//GEN-LINE:|53-getter|1|53-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|53-getter|2|
+        return authScreenSpacer2;
+    }
+//</editor-fold>//GEN-END:|53-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: authScreenExplainer ">//GEN-BEGIN:|54-getter|0|54-preInit
+    /**
+     * Returns an initialized instance of authScreenExplainer component.
+     *
+     * @return the initialized component instance
+     */
+    public StringItem getAuthScreenExplainer() {
+        if (authScreenExplainer == null) {//GEN-END:|54-getter|0|54-preInit
+            // write pre-init user code here
+            authScreenExplainer = new StringItem("How to log in:", "\nFoursquare requires a web login to allow this app access, and then grants a token. Click Authorize to open a browser. When presented with the token, copy it to the clipboard & paste it into the field above, then click Save Token.");//GEN-LINE:|54-getter|1|54-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|54-getter|2|
+        return authScreenExplainer;
+    }
+//</editor-fold>//GEN-END:|54-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: badTokenAlert ">//GEN-BEGIN:|55-getter|0|55-preInit
+    /**
+     * Returns an initialized instance of badTokenAlert component.
+     *
+     * @return the initialized component instance
+     */
+    public Alert getBadTokenAlert() {
+        if (badTokenAlert == null) {//GEN-END:|55-getter|0|55-preInit
+            // write pre-init user code here
+            badTokenAlert = new Alert("alert", "Error: The authorization token is malformed or invalid. Please try entering a fresh token.", null, null);//GEN-BEGIN:|55-getter|1|55-postInit
+            badTokenAlert.addCommand(getOkCommand());
+            badTokenAlert.setCommandListener(this);
+            badTokenAlert.setTimeout(Alert.FOREVER);//GEN-END:|55-getter|1|55-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|55-getter|2|
+        return badTokenAlert;
+    }
+//</editor-fold>//GEN-END:|55-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: okCommand ">//GEN-BEGIN:|56-getter|0|56-preInit
+    /**
+     * Returns an initialized instance of okCommand component.
+     *
+     * @return the initialized component instance
+     */
+    public Command getOkCommand() {
+        if (okCommand == null) {//GEN-END:|56-getter|0|56-preInit
+            // write pre-init user code here
+            okCommand = new Command("Ok", Command.OK, 0);//GEN-LINE:|56-getter|1|56-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|56-getter|2|
+        return okCommand;
+    }
+//</editor-fold>//GEN-END:|56-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Method: verifyToken ">//GEN-BEGIN:|59-if|0|59-preIf
+    /**
+     * Performs an action assigned to the verifyToken if-point.
+     */
+    public void verifyToken() {//GEN-END:|59-if|0|59-preIf
+        // enter pre-if user code here
+        if (false) {//GEN-LINE:|59-if|1|60-preAction
+            // write pre-action user code here
+//GEN-LINE:|59-if|2|60-postAction
+            // write post-action user code here
+        } else {//GEN-LINE:|59-if|3|61-preAction
+            // write pre-action user code here
+            switchDisplayable(null, getBadTokenAlert());//GEN-LINE:|59-if|4|61-postAction
+            // write post-action user code here
+        }//GEN-LINE:|59-if|5|59-postIf
+        // enter post-if user code here
+    }//GEN-BEGIN:|59-if|6|
+//</editor-fold>//GEN-END:|59-if|6|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: debug ">//GEN-BEGIN:|69-getter|0|69-preInit
+    /**
+     * Returns an initialized instance of debug component.
+     *
+     * @return the initialized component instance
+     */
+    public Alert getDebug() {
+        if (debug == null) {//GEN-END:|69-getter|0|69-preInit
+            // write pre-init user code here
+            debug = new Alert("alert");//GEN-BEGIN:|69-getter|1|69-postInit
+            debug.setTimeout(Alert.FOREVER);//GEN-END:|69-getter|1|69-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|69-getter|2|
+        return debug;
+    }
+//</editor-fold>//GEN-END:|69-getter|2|
 
 
 

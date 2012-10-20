@@ -17,6 +17,20 @@
                     <Component componentID="4" typeID="C#MobileDeviceResumeEventSource"/>
                 </Component>
                 <Component componentID="5" typeID="C#Display"/>
+                <Component componentID="59" typeID="C#IfPoint">
+                    <Property name="methodName" typeID="Pjava.lang.String" value="VverifyToken"/>
+                    <Property name="condition" typeID="P#javacode" value="Vfalse&#10;"/>
+                    <Property name="true" typeID="C#IfTrueEventSource" value="R60"/>
+                    <Property name="false" typeID="C#IfFalseEventSource" value="R61"/>
+                    <Component componentID="60" typeID="C#IfTrueEventSource"/>
+                    <Component componentID="61" typeID="C#IfFalseEventSource">
+                        <Property name="eventHandler" typeID="C#EventHandler" value="R63"/>
+                        <Component componentID="63" typeID="C#SwitchDisplayableEventHandler">
+                            <Property name="eventSource" typeID="C#EventSource" value="R61"/>
+                            <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R55"/>
+                        </Component>
+                    </Component>
+                </Component>
             </Component>
             <Component componentID="6" typeID="C#ControllersCategory">
                 <Component componentID="7" typeID="C#CommandListener"/>
@@ -28,33 +42,26 @@
                     <Property name="instanceName" typeID="Pjava.lang.String" value="VsplashScreen"/>
                     <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
                     <Property name="commands" typeID="1C#CommandEventSource" value="A1:3_R16"/>
-                    <Property name="title" typeID="Pjava.lang.String" value="VsplashScreen"/>
+                    <Property name="title" typeID="Pjava.lang.String" value="VPrairie Box"/>
                     <Property name="commandListener" typeID="C#CommandListener" value="R7"/>
                     <Property name="text" typeID="Pjava.lang.String" value="VPrairie Box"/>
                     <Component componentID="16" typeID="C#SplashScreenDismissCommandEventSource">
-                        <Property name="eventHandler" typeID="C#EventHandler" value="R24"/>
+                        <Property name="eventHandler" typeID="C#EventHandler" value="R67"/>
                         <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R14"/>
                         <Property name="command" typeID="Cjavax.microedition.lcdui.Command" value="R15"/>
-                        <Component componentID="24" typeID="C#SwitchDisplayableEventHandler">
+                        <Component componentID="67" typeID="C#MethodPointEventHandler">
                             <Property name="eventSource" typeID="C#EventSource" value="R16"/>
-                            <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R23"/>
+                            <Property name="methodPoint" typeID="C#MethodPoint" value="R59"/>
                         </Component>
                     </Component>
                 </Component>
-                <Component componentID="17" typeID="Cjavax.microedition.lcdui.TextBox">
-                    <Property name="instanceName" typeID="Pjava.lang.String" value="VtextBox"/>
-                    <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
-                    <Property name="title" typeID="Pjava.lang.String" value="VtextBox"/>
-                    <Property name="commandListener" typeID="C#CommandListener" value="R7"/>
-                    <Property name="maxSize" typeID="Pint" value="V100"/>
-                </Component>
                 <Component componentID="23" typeID="Cjavax.microedition.lcdui.Form">
-                    <Property name="instanceName" typeID="Pjava.lang.String" value="Vform"/>
+                    <Property name="instanceName" typeID="Pjava.lang.String" value="VauthScreen"/>
                     <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
                     <Property name="commands" typeID="1C#CommandEventSource" value="A2:3_R263_R33"/>
                     <Property name="title" typeID="Pjava.lang.String" value="VLogin"/>
                     <Property name="commandListener" typeID="C#CommandListener" value="R7"/>
-                    <Property name="items" typeID="1Cjavax.microedition.lcdui.Item" value="A2:3_R283_R29"/>
+                    <Property name="items" typeID="1Cjavax.microedition.lcdui.Item" value="A6:3_R283_R293_R523_R493_R533_R54"/>
                     <Component componentID="26" typeID="C#CommandEventSource">
                         <Property name="eventHandler" typeID="C#EventHandler" value="R27"/>
                         <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R23"/>
@@ -64,25 +71,92 @@
                             <Property name="mobileDevice" typeID="C#MobileDevice" value="R2"/>
                         </Component>
                     </Component>
-                    <Component componentID="28" typeID="Cjavax.microedition.lcdui.StringItem">
-                        <Property name="instanceName" typeID="Pjava.lang.String" value="VstringItem"/>
-                        <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
-                        <Property name="label" typeID="Pjava.lang.String" value="VConnecting to Foursquare"/>
-                        <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R8"/>
-                        <Property name="text" typeID="Pjava.lang.String" value="Uwinner&#10;       "/>
-                    </Component>
                     <Component componentID="29" typeID="Cjavax.microedition.lcdui.TextField">
-                        <Property name="instanceName" typeID="Pjava.lang.String" value="VtextField"/>
+                        <Property name="instanceName" typeID="Pjava.lang.String" value="VtokenField"/>
                         <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
                         <Property name="label" typeID="Pjava.lang.String" value="VEnter Token"/>
                         <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R8"/>
+                        <Property name="text" typeID="Pjava.lang.String" value="V"/>
                         <Property name="maxSize" typeID="Pint" value="V64"/>
                         <Property name="constraints" typeID="Pint" value="V0"/>
+                    </Component>
+                    <Component componentID="28" typeID="Cjavax.microedition.lcdui.StringItem">
+                        <Property name="instanceName" typeID="Pjava.lang.String" value="VconnectionstatusItem"/>
+                        <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
+                        <Property name="label" typeID="Pjava.lang.String" value="VStatus: "/>
+                        <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R8"/>
+                        <Property name="text" typeID="Pjava.lang.String" value="Uwinner&#10;       "/>
                     </Component>
                     <Component componentID="33" typeID="C#CommandEventSource">
                         <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R23"/>
                         <Property name="command" typeID="Cjavax.microedition.lcdui.Command" value="R32"/>
                     </Component>
+                    <Component componentID="49" typeID="Cjavax.microedition.lcdui.StringItem">
+                        <Property name="instanceName" typeID="Pjava.lang.String" value="VsavetokenButton"/>
+                        <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
+                        <Property name="label" typeID="Pjava.lang.String" value="V"/>
+                        <Property name="layout" typeID="Pint" value="V19715"/>
+                        <Property name="preferredWidth" typeID="Pint" value="V-1"/>
+                        <Property name="commands" typeID="1C#ItemCommandEventSource" value="A1:3_R51"/>
+                        <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R8"/>
+                        <Property name="text" typeID="Pjava.lang.String" value="VSave Token"/>
+                        <Property name="appearanceMode" typeID="Pint" value="V2"/>
+                        <Component componentID="51" typeID="C#ItemCommandEventSource">
+                            <Property name="eventHandler" typeID="C#EventHandler" value="R62"/>
+                            <Property name="item" typeID="Cjavax.microedition.lcdui.Item" value="R49"/>
+                            <Property name="command" typeID="Cjavax.microedition.lcdui.Command" value="R50"/>
+                            <Component componentID="62" typeID="C#MethodPointEventHandler">
+                                <Property name="eventSource" typeID="C#EventSource" value="R51"/>
+                                <Property name="methodPoint" typeID="C#MethodPoint" value="R59"/>
+                            </Component>
+                        </Component>
+                    </Component>
+                    <Component componentID="52" typeID="Cjavax.microedition.lcdui.Spacer">
+                        <Property name="instanceName" typeID="Pjava.lang.String" value="VauthScreenSpacer1"/>
+                        <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
+                        <Property name="label" typeID="Pjava.lang.String" value="Vspacer"/>
+                        <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R8"/>
+                        <Property name="minHeight" typeID="Pint" value="V20"/>
+                    </Component>
+                    <Component componentID="53" typeID="Cjavax.microedition.lcdui.Spacer">
+                        <Property name="instanceName" typeID="Pjava.lang.String" value="VauthScreenSpacer2"/>
+                        <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
+                        <Property name="label" typeID="Pjava.lang.String" value="Vspacer1"/>
+                        <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R8"/>
+                        <Property name="minHeight" typeID="Pint" value="V40"/>
+                    </Component>
+                    <Component componentID="54" typeID="Cjavax.microedition.lcdui.StringItem">
+                        <Property name="instanceName" typeID="Pjava.lang.String" value="VauthScreenExplainer"/>
+                        <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
+                        <Property name="label" typeID="Pjava.lang.String" value="VHow to log in:"/>
+                        <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R8"/>
+                        <Property name="text" typeID="Pjava.lang.String" value="V&#10;Foursquare requires a web login to allow this app access, and then grants a token. Click Authorize to open a browser. When presented with the token, copy it to the clipboard &amp; paste it into the field above, then click Save Token."/>
+                    </Component>
+                </Component>
+                <Component componentID="55" typeID="Cjavax.microedition.lcdui.Alert">
+                    <Property name="instanceName" typeID="Pjava.lang.String" value="VbadTokenAlert"/>
+                    <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
+                    <Property name="commands" typeID="1C#CommandEventSource" value="A1:3_R57"/>
+                    <Property name="title" typeID="Pjava.lang.String" value="Valert"/>
+                    <Property name="commandListener" typeID="C#CommandListener" value="R7"/>
+                    <Property name="string" typeID="Pjava.lang.String" value="VError: The authorization token is malformed or invalid. Please try entering a fresh token."/>
+                    <Property name="timeout" typeID="Pint" value="V-2"/>
+                    <Component componentID="57" typeID="C#CommandEventSource">
+                        <Property name="eventHandler" typeID="C#EventHandler" value="R58"/>
+                        <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R55"/>
+                        <Property name="command" typeID="Cjavax.microedition.lcdui.Command" value="R56"/>
+                        <Component componentID="58" typeID="C#SwitchDisplayableEventHandler">
+                            <Property name="eventSource" typeID="C#EventSource" value="R57"/>
+                            <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R23"/>
+                        </Component>
+                    </Component>
+                </Component>
+                <Component componentID="69" typeID="Cjavax.microedition.lcdui.Alert">
+                    <Property name="instanceName" typeID="Pjava.lang.String" value="Vdebug"/>
+                    <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
+                    <Property name="title" typeID="Pjava.lang.String" value="Valert"/>
+                    <Property name="commandListener" typeID="C#CommandListener" value="R7"/>
+                    <Property name="timeout" typeID="Pint" value="V-2"/>
                 </Component>
             </Component>
             <Component componentID="11" typeID="C#CommandsCategory">
@@ -105,10 +179,35 @@
                     <Property name="type" typeID="Pint" value="V7"/>
                 </Component>
                 <Component componentID="32" typeID="Cjavax.microedition.lcdui.Command">
-                    <Property name="instanceName" typeID="Pjava.lang.String" value="VitemCommand"/>
+                    <Property name="instanceName" typeID="Pjava.lang.String" value="VauthpopupCommand"/>
                     <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
                     <Property name="label" typeID="Pjava.lang.String" value="VAuthorize"/>
                     <Property name="type" typeID="Pint" value="V8"/>
+                </Component>
+                <Component componentID="37" typeID="C#LoginScreenLoginCommand">
+                    <Property name="label" typeID="Pjava.lang.String" value="VLogin"/>
+                    <Property name="type" typeID="Pint" value="V4"/>
+                    <Property name="priority" typeID="Pint" value="V0"/>
+                    <Property name="ordinary" typeID="Pboolean" value="Vfalse"/>
+                </Component>
+                <Component componentID="40" typeID="C#SMSComposerSendCommand">
+                    <Property name="label" typeID="Pjava.lang.String" value="VSend"/>
+                    <Property name="type" typeID="Pint" value="V4"/>
+                    <Property name="priority" typeID="Pint" value="V0"/>
+                    <Property name="ordinary" typeID="Pboolean" value="Vfalse"/>
+                </Component>
+                <Component componentID="50" typeID="Cjavax.microedition.lcdui.Command">
+                    <Property name="instanceName" typeID="Pjava.lang.String" value="VsavetokenCommand"/>
+                    <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
+                    <Property name="label" typeID="Pjava.lang.String" value="VSave"/>
+                    <Property name="longLabel" typeID="Pjava.lang.String" value="VSave Token"/>
+                    <Property name="type" typeID="Pint" value="V8"/>
+                </Component>
+                <Component componentID="56" typeID="Cjavax.microedition.lcdui.Command">
+                    <Property name="instanceName" typeID="Pjava.lang.String" value="VokCommand"/>
+                    <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
+                    <Property name="label" typeID="Pjava.lang.String" value="VOk"/>
+                    <Property name="type" typeID="Pint" value="V4"/>
                 </Component>
             </Component>
             <Component componentID="12" typeID="C#ResourcesCategory"/>
@@ -116,9 +215,11 @@
         </Component>
     </Document>
     <FlowScene version="1">
-        <Node componentID="17" descriptorID="componentNode17" x="550" y="98"/>
-        <Node componentID="2" descriptorID="componentNode2" x="60" y="28"/>
-        <Node componentID="14" descriptorID="componentNode14" x="323" y="49"/>
-        <Node componentID="23" descriptorID="componentNode23" x="404" y="163"/>
+        <Node componentID="14" descriptorID="componentNode14" x="292" y="-34"/>
+        <Node componentID="55" descriptorID="componentNode55" x="279" y="397"/>
+        <Node componentID="59" descriptorID="componentNode59" x="408" y="241"/>
+        <Node componentID="2" descriptorID="componentNode2" x="21" y="31"/>
+        <Node componentID="23" descriptorID="componentNode23" x="158" y="173"/>
+        <Node componentID="69" descriptorID="componentNode69" x="42" y="-91"/>
     </FlowScene>
 </VisualDesign>

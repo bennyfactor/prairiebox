@@ -40,7 +40,7 @@ public final class  httpStest {
     }
     catch (IOException ioe) {
       System.out.println("HTTPS Exception" + ioe.toString());
-      returnval = "Error. Unable to make https connections.";
+      returnval = "Error. Can't make https connections.";
     }
     return(returnval);
          
