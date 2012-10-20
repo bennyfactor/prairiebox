@@ -42,19 +42,18 @@
 			el.focus(); 
 		} 
 		
-		//parse URL GET http://papermashup.com/read-url-get-variables-withjavascript/
-		function getUrlVars() {
-		    var vars = {};
-		    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-		        vars[key] = value;
-		    });
-		    return vars;
-		}
+		//parse URL Hash parameneter http://stackoverflow.com/a/7187610
+		function getURLHashParameter(name) {
+
+		        return decodeURI(
+		            (RegExp('[#|&]' + name + '=' + '(.+?)(&|$)').exec(location.hash)||[,null])[1]
+		        );
+		    }
 		
 		//token from URL GET
 		function token_get() {
 			textbox = document.getElementById('copybox');
-			token = getUrlVars()["code"];
+			token = getURLHashParameter("access_token");
 			if(null== token)
 			{
 				token = "ERROR. DID NOT GET TOKEN.";
@@ -69,18 +68,6 @@
 		} 
 		window.onload = PageInit; 
 		
-	
-	    
-		function getURLHashParameter(name) {
-
-		        return decodeURI(
-		            (RegExp('[#|&]' + name + '=' + '(.+?)(&|$)').exec(location.hash)||[,null])[1]
-		        );
-		    }
-
-		// Get all URL parameters
-		var access_token = getURLHashParameter("access_token");
-		alert(access_token);
 	
 	
 	//--> 
