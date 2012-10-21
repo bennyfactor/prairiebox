@@ -384,7 +384,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     public Alert getBadTokenAlert() {
         if (badTokenAlert == null) {//GEN-END:|55-getter|0|55-preInit
             // write pre-init user code here
-            String badtokenalertmsg = "Error: The authorization token is malformed or invalid. Please try entering a fresh token." + tokenField.getString();
+            String badtokenalertmsg = "Error: The authorization token is malformed or invalid. Please try entering a fresh token.";
             badTokenAlert = new Alert("alert", badtokenalertmsg, null, null);//GEN-BEGIN:|55-getter|1|55-postInit
             badTokenAlert.addCommand(getOkCommand());
             badTokenAlert.setCommandListener(this);
