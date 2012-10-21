@@ -45,7 +45,7 @@
 		//parse URL GET http://papermashup.com/read-url-get-variables-withjavascript/
 		function getUrlVars() {
 		    var vars = {};
-		    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+		    var parts = window.location.href.replace(/[#&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
 		        vars[key] = value;
 		    });
 		    return vars;
@@ -54,7 +54,7 @@
 		//token from URL GET
 		function token_get() {
 			textbox = document.getElementById('copybox');
-			token = getUrlVars()["code"];
+			token = getUrlVars()["access_token"];
 			if(null== token)
 			{
 				token = "ERROR. DID NOT GET TOKEN.";
