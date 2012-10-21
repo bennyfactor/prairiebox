@@ -243,7 +243,8 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     public TextField getTokenField() {
         if (tokenField == null) {//GEN-END:|29-getter|0|29-preInit
             // write pre-init user code here
-            tokenField = new TextField("Enter Token", "", 64, TextField.ANY);//GEN-LINE:|29-getter|1|29-postInit
+            tokenField = new TextField("Enter Token", "", 32768, TextField.ANY);//GEN-BEGIN:|29-getter|1|29-postInit
+            tokenField.setInitialInputMode("UCB_BASIC_LATIN");//GEN-END:|29-getter|1|29-postInit
             // write post-init user code here
         }//GEN-BEGIN:|29-getter|2|
         return tokenField;
@@ -307,6 +308,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         // write post-action user code here
     }//GEN-BEGIN:|8-itemCommandAction|4|
 //</editor-fold>//GEN-END:|8-itemCommandAction|4|
+
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Getter: savetokenCommand ">//GEN-BEGIN:|50-getter|0|50-preInit
     /**
@@ -431,13 +433,6 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
 //</editor-fold>//GEN-END:|59-if|6|
 
 
-
-
-
-
-
-
-
 //<editor-fold defaultstate="collapsed" desc=" Generated Getter: form ">//GEN-BEGIN:|86-getter|0|86-preInit
     /**
      * Returns an initialized instance of form component.
@@ -487,6 +482,12 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         return exitCommand1;
     }
 //</editor-fold>//GEN-END:|89-getter|2|
+
+
+
+
+
+
 
     /**
      * Returns a display instance.
@@ -545,7 +546,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     public void Auth24sq() {
 
         try {
-            platformRequest("https://foursquare.com/oauth2/authenticate?client_id=" + PrivateData.OAUTH_CONSUMER_KEY + "&response_type=code&redirect_uri=" + PrivateData.REDIR_CALLBACK_URL);
+            platformRequest("http://prairiebox4j2me.appspot.com/login2");
         } catch (ConnectionNotFoundException ex) {
             System.out.println(ex);
         }

@@ -83,8 +83,9 @@
                         <Property name="label" typeID="Pjava.lang.String" value="VEnter Token"/>
                         <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R8"/>
                         <Property name="text" typeID="Pjava.lang.String" value="V"/>
-                        <Property name="maxSize" typeID="Pint" value="V64"/>
+                        <Property name="maxSize" typeID="Pint" value="V32768"/>
                         <Property name="constraints" typeID="Pint" value="V0"/>
+                        <Property name="initialInputMode" typeID="Pjava.lang.String" value="VUCB_BASIC_LATIN"/>
                     </Component>
                     <Component componentID="28" typeID="Cjavax.microedition.lcdui.StringItem">
                         <Property name="instanceName" typeID="Pjava.lang.String" value="VconnectionstatusItem"/>
@@ -108,10 +109,10 @@
                         <Property name="text" typeID="Pjava.lang.String" value="VSave Token"/>
                         <Property name="appearanceMode" typeID="Pint" value="V2"/>
                         <Component componentID="51" typeID="C#ItemCommandEventSource">
-                            <Property name="eventHandler" typeID="C#EventHandler" value="R62"/>
+                            <Property name="eventHandler" typeID="C#EventHandler" value="R102"/>
                             <Property name="item" typeID="Cjavax.microedition.lcdui.Item" value="R49"/>
                             <Property name="command" typeID="Cjavax.microedition.lcdui.Command" value="R50"/>
-                            <Component componentID="62" typeID="C#MethodPointEventHandler">
+                            <Component componentID="102" typeID="C#MethodPointEventHandler">
                                 <Property name="eventSource" typeID="C#EventSource" value="R51"/>
                                 <Property name="methodPoint" typeID="C#MethodPoint" value="R59"/>
                             </Component>
@@ -245,10 +246,10 @@
     </Document>
     <FlowScene version="1">
         <Node componentID="59" descriptorID="componentNode59" x="408" y="241"/>
-        <Node componentID="2" descriptorID="componentNode2" x="21" y="31"/>
-        <Node componentID="23" descriptorID="componentNode23" x="158" y="173"/>
-        <Node componentID="55" descriptorID="componentNode55" x="162" y="325"/>
-        <Node componentID="14" descriptorID="componentNode14" x="292" y="-34"/>
-        <Node componentID="86" descriptorID="componentNode86" x="498" y="72"/>
+        <Node componentID="2" descriptorID="componentNode2" x="9" y="47"/>
+        <Node componentID="23" descriptorID="componentNode23" x="175" y="182"/>
+        <Node componentID="55" descriptorID="componentNode55" x="411" y="368"/>
+        <Node componentID="14" descriptorID="componentNode14" x="307" y="109"/>
+        <Node componentID="86" descriptorID="componentNode86" x="465" y="7"/>
     </FlowScene>
 </VisualDesign>
