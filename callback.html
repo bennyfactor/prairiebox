@@ -76,7 +76,7 @@
 		        return decodeURI(
 		            (RegExp('[#|&]' + name + '=' + '(.+?)(&|$)').exec(location.hash)||[,null])[1]
 		        );
-		    }
+		    },
 
 		// Get all URL parameters
 		var access_token = getURLHashParameter("access_token");
