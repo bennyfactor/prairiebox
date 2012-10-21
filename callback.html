@@ -12,7 +12,8 @@
 	
 	
 </head>
-<body onload="document.getElementById('copybox').focus()">
+<!-- ><body onload="document.getElementById('copybox').focus()"> -->
+	<body onload="document.getElementById('copybox').value=window.location.hash">
 	<img src="prairiebox.png">
     <h1>Prairie Box</h1>
 	Foursquare for GPS-enabled JavaME phones
@@ -43,7 +44,7 @@
 		} 
 		
 		//parse URL GET http://papermashup.com/read-url-get-variables-withjavascript/
-		function getUrlVars() {
+/*		function getUrlVars() {
 		    var vars = {};
 		    var parts = window.location.href.replace(/[#&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
 		        vars[key] = value;
@@ -74,7 +75,7 @@
 		req.send(null);
 		var headers = req.getAllResponseHeaders().toLowerCase();
 		alert(window.location.hash);
-	
+*/	
 	//--> 
 	</script>
 	
