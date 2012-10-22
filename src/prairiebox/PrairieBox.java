@@ -29,6 +29,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     private Alert badTokenAlert;
     private Form form;
     private StringItem stringItem;
+    private List list;
     private Command exitCommand;
     private Command authpopupCommand;
     private Command savetokenCommand;
@@ -63,24 +64,12 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
      */
     public void startMIDlet() {//GEN-END:|3-startMIDlet|0|3-preAction
         // write pre-action user code here
-
-        // http test
-        httptest get = new httptest();
-        try {
-            get.getBirthdayFromNameUsingGet("benny");
-        } catch (IOException e) {
-            System.out.println("IOException " + e.toString());
-        }
-        //
-
-
+        switchDisplayable(null, getSplashScreen());//GEN-LINE:|3-startMIDlet|1|3-postAction
+        // write post-action user code here
+        
         // httpS test
         httpStest sec = new httpStest();
         httpstatus = sec.run();
-        //
-
-        switchDisplayable(null, getSplashScreen());//GEN-LINE:|3-startMIDlet|1|3-postAction
-        // write post-action user code here
     }//GEN-BEGIN:|3-startMIDlet|2|
 //</editor-fold>//GEN-END:|3-startMIDlet|2|
 
@@ -151,17 +140,23 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                 // write pre-action user code here
                 exitMIDlet();//GEN-LINE:|7-commandAction|8|90-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|9|16-preAction
-        } else if (displayable == splashScreen) {
-            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|9|16-preAction
+            }//GEN-BEGIN:|7-commandAction|9|105-preAction
+        } else if (displayable == list) {
+            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|9|105-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getAuthScreen());//GEN-LINE:|7-commandAction|10|16-postAction
+                listAction();//GEN-LINE:|7-commandAction|10|105-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|11|7-postCommandAction
-        }//GEN-END:|7-commandAction|11|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|11|16-preAction
+        } else if (displayable == splashScreen) {
+            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|11|16-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getAuthScreen());//GEN-LINE:|7-commandAction|12|16-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|13|7-postCommandAction
+        }//GEN-END:|7-commandAction|13|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|12|
-//</editor-fold>//GEN-END:|7-commandAction|12|
+    }//GEN-BEGIN:|7-commandAction|14|
+//</editor-fold>//GEN-END:|7-commandAction|14|
 
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Getter: splashScreen ">//GEN-BEGIN:|14-getter|0|14-preInit
@@ -482,6 +477,38 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         return exitCommand1;
     }
 //</editor-fold>//GEN-END:|89-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: list ">//GEN-BEGIN:|103-getter|0|103-preInit
+    /**
+     * Returns an initialized instance of list component.
+     *
+     * @return the initialized component instance
+     */
+    public List getList() {
+        if (list == null) {//GEN-END:|103-getter|0|103-preInit
+            // write pre-init user code here
+            list = new List("recent checkins", Choice.IMPLICIT);//GEN-BEGIN:|103-getter|1|103-postInit
+            list.setCommandListener(this);
+            list.setSelectedFlags(new boolean[]{});//GEN-END:|103-getter|1|103-postInit
+            // write post-init user code here
+            
+        }//GEN-BEGIN:|103-getter|2|
+        return list;
+    }
+//</editor-fold>//GEN-END:|103-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Method: listAction ">//GEN-BEGIN:|103-action|0|103-preAction
+    /**
+     * Performs an action assigned to the selected list element in the list
+     * component.
+     */
+    public void listAction() {//GEN-END:|103-action|0|103-preAction
+        // enter pre-action user code here
+        String __selectedString = getList().getString(getList().getSelectedIndex());//GEN-LINE:|103-action|1|103-postAction
+        // enter post-action user code here
+    }//GEN-BEGIN:|103-action|2|108-postAction
+//</editor-fold>//GEN-END:|103-action|2|108-postAction
+
 
 
 
