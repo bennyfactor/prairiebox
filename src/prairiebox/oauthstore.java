@@ -86,7 +86,7 @@ public class oauthstore {
      */
     public static String[][] recentCheckins(String token, int limit) {
     String[][] checkins;
-    checkins = new String[5][limit];
+    checkins = new String[limit][6];
         checkins[0][0] = "Error"; //failsafe
     String url;
     String httpcontent;
@@ -127,32 +127,43 @@ public class oauthstore {
         JSONObject json = new JSONObject(httpcontent);
         JSONObject meta = new JSONObject(json.getString("meta"));
        
-        PrivateData.debugmsg = meta.getString("code");
+        //PrivateData.debugmsg = meta.getString("code");
         
         // read json response if request returned valid
         if ("200".equals(meta.getString("code"))) {  
             // get the response json object
             JSONObject response = new JSONObject(json.getString("response"));
-            // get the array (why is this not an object?) of the recent checkins
+            // get the array (why isn't this an object? It's [] vs {} in JSON) of the recent checkins
             JSONArray recent = new JSONArray(response.getString("recent"));
             
             //loop gets data from JSONArray for parsing. Each array index is a new recent check-in item
             for (int i = 0; i < limit; i++) {
                 JSONObject get = new JSONObject(recent.getString(i));
-                //get checkin person's name
+                //get checkin id
+                checkins[i][0] = get.getString("id");
+                //get checkin person's name, uses optString in case user doesn't share full name
+                JSONObject user = new JSONObject(get.getString("user")); 
+                checkins[i][1] = user.optString("firstName") + " " + user.optString("lastName");
                 //get checkin venue name
-                //get checkin venue location
-                //get checkin time
+                JSONObject venue = new JSONObject(get.getString("venue"));
+                checkins[i][2] = venue.getString("name");
+                //get checkin venue location, use opts in case info is unavailable
+                JSONObject location = new JSONObject(venue.optString("location"));
+                checkins[i][3] =  location.optString("city") + ", " + location.optString("state") + ", " + location.optString("cc") ;
+                //get checkin time; opt forces this value to a String
+                checkins[i][4] = get.optString("createdAt");
                 //get picture
+                checkins[i][5] = user.optString("photo");
             }
         }
+        PrivateData.debugmsg = checkins[0][1];
     }
     catch (JSONException joe) {
         System.out.println("JSON Decode Exception" + joe.toString());
         PrivateData.debugmsg = "Error. Can't decode JSON";
     }
     
-
+    
     return (checkins);
     }
 

@@ -11,10 +11,8 @@ package prairiebox;
  */
 
 import java.io.*;
-
 import javax.microedition.io.*;
 import javax.microedition.pki.*;
-import javax.microedition.midlet.MIDlet;
 
 public final class  httpStest {
 

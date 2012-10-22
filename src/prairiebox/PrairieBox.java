@@ -9,6 +9,8 @@ import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.*;
 import org.netbeans.microedition.lcdui.SplashScreen;
+import org.netbeans.microedition.lcdui.WaitScreen;
+import org.netbeans.microedition.util.SimpleCancellableTask;
 
 /**
  * @author benlamb
@@ -30,11 +32,16 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     private Form form;
     private StringItem stringItem;
     private List list;
+    private Form waitScreen;
+    private ImageItem imageItem;
     private Command exitCommand;
     private Command authpopupCommand;
     private Command savetokenCommand;
     private Command okCommand;
     private Command exitCommand1;
+    private Command exitCommand2;
+    private SimpleCancellableTask task;
+    private Image image1;
 //</editor-fold>//GEN-END:|fields|0|
 
     /**
@@ -152,11 +159,18 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                 // write pre-action user code here
                 switchDisplayable(null, getAuthScreen());//GEN-LINE:|7-commandAction|12|16-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|13|7-postCommandAction
-        }//GEN-END:|7-commandAction|13|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|13|119-preAction
+        } else if (displayable == waitScreen) {
+            if (command == exitCommand2) {//GEN-END:|7-commandAction|13|119-preAction
+                // write pre-action user code here
+//GEN-LINE:|7-commandAction|14|119-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|15|7-postCommandAction
+        }//GEN-END:|7-commandAction|15|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|14|
-//</editor-fold>//GEN-END:|7-commandAction|14|
+    }//GEN-BEGIN:|7-commandAction|16|
+//</editor-fold>//GEN-END:|7-commandAction|16|
+
 
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Getter: splashScreen ">//GEN-BEGIN:|14-getter|0|14-preInit
@@ -412,15 +426,23 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
      */
     public void verifyToken() {//GEN-END:|59-if|0|59-preIf
         // enter pre-if user code here
+        //get token, prevent user from editing field or pressing button again
+        String token = tokenField.getString();
+        tokenField.setString("PROCESSING");
+        tokenField.setConstraints(TextField.UNEDITABLE);
+        
         boolean tokenValid;
-        tokenValid = oauthstore.isTokenValid(tokenField.getString());
+        tokenValid = oauthstore.isTokenValid(token);
         if (tokenValid) {//GEN-LINE:|59-if|1|60-preAction
             // write pre-action user code here
+            String[][] recentcheckins = oauthstore.recentCheckins(token, 5);
             switchDisplayable(null, getForm());//GEN-LINE:|59-if|2|60-postAction
             // write post-action user code here
         } else {//GEN-LINE:|59-if|3|61-preAction
             // write pre-action user code here
             switchDisplayable(null, getBadTokenAlert());//GEN-LINE:|59-if|4|61-postAction
+            tokenField.setString("");
+            tokenField.setConstraints(TextField.ANY);
             // write post-action user code here
         }//GEN-LINE:|59-if|5|59-postIf
         // enter post-if user code here
@@ -506,8 +528,101 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         // enter pre-action user code here
         String __selectedString = getList().getString(getList().getSelectedIndex());//GEN-LINE:|103-action|1|103-postAction
         // enter post-action user code here
-    }//GEN-BEGIN:|103-action|2|108-postAction
-//</editor-fold>//GEN-END:|103-action|2|108-postAction
+    }//GEN-BEGIN:|103-action|2|
+//</editor-fold>//GEN-END:|103-action|2|
+
+
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: task ">//GEN-BEGIN:|114-getter|0|114-preInit
+    /**
+     * Returns an initialized instance of task component.
+     *
+     * @return the initialized component instance
+     */
+    public SimpleCancellableTask getTask() {
+        if (task == null) {//GEN-END:|114-getter|0|114-preInit
+            // write pre-init user code here
+            task = new SimpleCancellableTask();//GEN-BEGIN:|114-getter|1|114-execute
+            task.setExecutable(new org.netbeans.microedition.util.Executable() {
+                public void execute() throws Exception {//GEN-END:|114-getter|1|114-execute
+// write task-execution user code here
+                }//GEN-BEGIN:|114-getter|2|114-postInit
+            });//GEN-END:|114-getter|2|114-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|114-getter|3|
+        return task;
+    }
+//</editor-fold>//GEN-END:|114-getter|3|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: waitScreen ">//GEN-BEGIN:|115-getter|0|115-preInit
+    /**
+     * Returns an initialized instance of waitScreen component.
+     *
+     * @return the initialized component instance
+     */
+    public Form getWaitScreen() {
+        if (waitScreen == null) {//GEN-END:|115-getter|0|115-preInit
+            // write pre-init user code here
+            waitScreen = new Form("WORKING", new Item[]{getImageItem()});//GEN-BEGIN:|115-getter|1|115-postInit
+            waitScreen.addCommand(getExitCommand2());
+            waitScreen.setCommandListener(this);//GEN-END:|115-getter|1|115-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|115-getter|2|
+        return waitScreen;
+    }
+//</editor-fold>//GEN-END:|115-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: imageItem ">//GEN-BEGIN:|116-getter|0|116-preInit
+    /**
+     * Returns an initialized instance of imageItem component.
+     *
+     * @return the initialized component instance
+     */
+    public ImageItem getImageItem() {
+        if (imageItem == null) {//GEN-END:|116-getter|0|116-preInit
+            // write pre-init user code here
+            imageItem = new ImageItem("imageItem", getImage1(), ImageItem.LAYOUT_DEFAULT, "<Missing Image>");//GEN-LINE:|116-getter|1|116-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|116-getter|2|
+        return imageItem;
+    }
+//</editor-fold>//GEN-END:|116-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: image1 ">//GEN-BEGIN:|117-getter|0|117-preInit
+    /**
+     * Returns an initialized instance of image1 component.
+     *
+     * @return the initialized component instance
+     */
+    public Image getImage1() {
+        if (image1 == null) {//GEN-END:|117-getter|0|117-preInit
+            // write pre-init user code here
+            try {//GEN-BEGIN:|117-getter|1|117-@java.io.IOException
+                image1 = Image.createImage("/org/netbeans/microedition/resources/file.png");
+            } catch (java.io.IOException e) {//GEN-END:|117-getter|1|117-@java.io.IOException
+                e.printStackTrace();
+            }//GEN-LINE:|117-getter|2|117-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|117-getter|3|
+        return image1;
+    }
+//</editor-fold>//GEN-END:|117-getter|3|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitCommand2 ">//GEN-BEGIN:|118-getter|0|118-preInit
+    /**
+     * Returns an initialized instance of exitCommand2 component.
+     *
+     * @return the initialized component instance
+     */
+    public Command getExitCommand2() {
+        if (exitCommand2 == null) {//GEN-END:|118-getter|0|118-preInit
+            // write pre-init user code here
+            exitCommand2 = new Command("Exit", Command.EXIT, 0);//GEN-LINE:|118-getter|1|118-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|118-getter|2|
+        return exitCommand2;
+    }
+//</editor-fold>//GEN-END:|118-getter|2|
 
 
 
