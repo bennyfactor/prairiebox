@@ -19,7 +19,7 @@ import org.json.me.JSONObject;
  */
 
 
-public class oauthstore {
+public class Foursquare {
     
     /**
      * takes token from input text field and validates it against Foursquare API
@@ -80,9 +80,9 @@ public class oauthstore {
  
   
     /**
-     * returns String[] of recent check-ins for (String token, int limit)
+     * returns String[][] of recent check-ins for (String token, int limit)
      * 
-     * @return String[] recent check-ins in array
+     * @return String[][] recent check-ins in array
      */
     public static String[][] recentCheckins(String token, int limit) {
     String[][] checkins;
@@ -150,9 +150,10 @@ public class oauthstore {
                 //get checkin venue location, use opts in case info is unavailable
                 JSONObject location = new JSONObject(venue.optString("location"));
                 checkins[i][3] =  location.optString("city") + ", " + location.optString("state") + ", " + location.optString("cc") ;
-                //get checkin time; opt forces this value to a String
-                checkins[i][4] = get.optString("createdAt");
-                //get picture
+                //get checkin time, use HowLongAgo to give a human readable time
+                                                        //L makes this a long, too
+                long now = System.currentTimeMillis() / 1000L;
+                checkins[i][4]= HowLongAgo.epoch((int) now, get.optInt("createdAt"));
                 checkins[i][5] = user.optString("photo");
             }
         }

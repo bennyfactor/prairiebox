@@ -4,13 +4,11 @@
  */
 package prairiebox;
 
-import java.io.IOException;
 import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.*;
 import javax.microedition.midlet.*;
+import org.netbeans.microedition.lcdui.SimpleTableModel;
 import org.netbeans.microedition.lcdui.SplashScreen;
-import org.netbeans.microedition.lcdui.WaitScreen;
-import org.netbeans.microedition.util.SimpleCancellableTask;
 
 /**
  * @author benlamb
@@ -19,6 +17,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
 
     public String httpstatus = "undefined error";
     private boolean midletPaused = false;
+    public String[][] recentCheckins;
 //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
     private SplashScreen splashScreen;
     private Form authScreen;
@@ -29,19 +28,15 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     private Spacer authScreenSpacer2;
     private Spacer authScreenSpacer1;
     private Alert badTokenAlert;
-    private Form form;
-    private StringItem stringItem;
-    private List list;
+    private List recentCheckinsList;
     private Form waitScreen;
     private ImageItem imageItem;
     private Command exitCommand;
     private Command authpopupCommand;
     private Command savetokenCommand;
     private Command okCommand;
-    private Command exitCommand1;
     private Command exitCommand2;
-    private SimpleCancellableTask task;
-    private Image image1;
+    private Command exitCommand3;
 //</editor-fold>//GEN-END:|fields|0|
 
     /**
@@ -141,17 +136,15 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                 // write pre-action user code here
                 switchDisplayable(null, getAuthScreen());//GEN-LINE:|7-commandAction|6|57-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|7|90-preAction
-        } else if (displayable == form) {
-            if (command == exitCommand1) {//GEN-END:|7-commandAction|7|90-preAction
+            }//GEN-BEGIN:|7-commandAction|7|105-preAction
+        } else if (displayable == recentCheckinsList) {
+            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|7|105-preAction
                 // write pre-action user code here
-                exitMIDlet();//GEN-LINE:|7-commandAction|8|90-postAction
+                recentCheckinsListAction();//GEN-LINE:|7-commandAction|8|105-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|9|105-preAction
-        } else if (displayable == list) {
-            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|9|105-preAction
+            } else if (command == exitCommand3) {//GEN-LINE:|7-commandAction|9|121-preAction
                 // write pre-action user code here
-                listAction();//GEN-LINE:|7-commandAction|10|105-postAction
+                exitMIDlet();//GEN-LINE:|7-commandAction|10|121-postAction
                 // write post-action user code here
             }//GEN-BEGIN:|7-commandAction|11|16-preAction
         } else if (displayable == splashScreen) {
@@ -432,11 +425,11 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         tokenField.setConstraints(TextField.UNEDITABLE);
         
         boolean tokenValid;
-        tokenValid = oauthstore.isTokenValid(token);
+        tokenValid = Foursquare.isTokenValid(token);
         if (tokenValid) {//GEN-LINE:|59-if|1|60-preAction
             // write pre-action user code here
-            String[][] recentcheckins = oauthstore.recentCheckins(token, 5);
-            switchDisplayable(null, getForm());//GEN-LINE:|59-if|2|60-postAction
+            recentCheckins =  Foursquare.recentCheckins(token, 5);
+            switchDisplayable(null, getRecentCheckinsList());//GEN-LINE:|59-if|2|60-postAction
             // write post-action user code here
         } else {//GEN-LINE:|59-if|3|61-preAction
             // write pre-action user code here
@@ -450,109 +443,61 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
 //</editor-fold>//GEN-END:|59-if|6|
 
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: form ">//GEN-BEGIN:|86-getter|0|86-preInit
-    /**
-     * Returns an initialized instance of form component.
-     *
-     * @return the initialized component instance
-     */
-    public Form getForm() {
-        if (form == null) {//GEN-END:|86-getter|0|86-preInit
-            // write pre-init user code here
-            form = new Form("Main Menu", new Item[]{getStringItem()});//GEN-BEGIN:|86-getter|1|86-postInit
-            form.addCommand(getExitCommand1());
-            form.setCommandListener(this);//GEN-END:|86-getter|1|86-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|86-getter|2|
-        return form;
-    }
-//</editor-fold>//GEN-END:|86-getter|2|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: stringItem ">//GEN-BEGIN:|88-getter|0|88-preInit
-    /**
-     * Returns an initialized instance of stringItem component.
-     *
-     * @return the initialized component instance
-     */
-    public StringItem getStringItem() {
-        if (stringItem == null) {//GEN-END:|88-getter|0|88-preInit
-            // write pre-init user code here
-            stringItem = new StringItem("stringItem", PrivateData.debugmsg);//GEN-LINE:|88-getter|1|88-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|88-getter|2|
-        return stringItem;
-    }
-//</editor-fold>//GEN-END:|88-getter|2|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitCommand1 ">//GEN-BEGIN:|89-getter|0|89-preInit
-    /**
-     * Returns an initialized instance of exitCommand1 component.
-     *
-     * @return the initialized component instance
-     */
-    public Command getExitCommand1() {
-        if (exitCommand1 == null) {//GEN-END:|89-getter|0|89-preInit
-            // write pre-init user code here
-            exitCommand1 = new Command("Exit", Command.EXIT, 0);//GEN-LINE:|89-getter|1|89-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|89-getter|2|
-        return exitCommand1;
-    }
-//</editor-fold>//GEN-END:|89-getter|2|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: list ">//GEN-BEGIN:|103-getter|0|103-preInit
+
+
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: recentCheckinsList ">//GEN-BEGIN:|103-getter|0|103-preInit
     /**
-     * Returns an initialized instance of list component.
+     * Returns an initialized instance of recentCheckinsList component.
      *
      * @return the initialized component instance
      */
-    public List getList() {
-        if (list == null) {//GEN-END:|103-getter|0|103-preInit
+    public List getRecentCheckinsList() {
+        if (recentCheckinsList == null) {//GEN-END:|103-getter|0|103-preInit
             // write pre-init user code here
-            list = new List("recent checkins", Choice.IMPLICIT);//GEN-BEGIN:|103-getter|1|103-postInit
-            list.setCommandListener(this);
-            list.setSelectedFlags(new boolean[]{});//GEN-END:|103-getter|1|103-postInit
+            recentCheckinsList = new List("recent checkins", Choice.IMPLICIT);//GEN-BEGIN:|103-getter|1|103-postInit
+            recentCheckinsList.append("burp \n another burp \n two burps", null);
+            recentCheckinsList.addCommand(getExitCommand3());
+            recentCheckinsList.setCommandListener(this);
+            recentCheckinsList.setSelectedFlags(new boolean[]{false});//GEN-END:|103-getter|1|103-postInit
             // write post-init user code here
+            //programattically add new lines of recent checkins here
+            recentCheckinsList.delete(0);
+            for (int i = 0; i < recentCheckins.length; i++) {
+                String[] thisCheckin = recentCheckins[i];
+                recentCheckinsList.append( thisCheckin[1] + "\n at " + thisCheckin[2] + "\n " + thisCheckin[3] + "\n " + thisCheckin[4], null );
+            }
             
         }//GEN-BEGIN:|103-getter|2|
-        return list;
+        return recentCheckinsList;
     }
 //</editor-fold>//GEN-END:|103-getter|2|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Method: listAction ">//GEN-BEGIN:|103-action|0|103-preAction
+//<editor-fold defaultstate="collapsed" desc=" Generated Method: recentCheckinsListAction ">//GEN-BEGIN:|103-action|0|103-preAction
     /**
-     * Performs an action assigned to the selected list element in the list
-     * component.
+     * Performs an action assigned to the selected list element in the
+     * recentCheckinsList component.
      */
-    public void listAction() {//GEN-END:|103-action|0|103-preAction
+    public void recentCheckinsListAction() {//GEN-END:|103-action|0|103-preAction
         // enter pre-action user code here
-        String __selectedString = getList().getString(getList().getSelectedIndex());//GEN-LINE:|103-action|1|103-postAction
+        String __selectedString = getRecentCheckinsList().getString(getRecentCheckinsList().getSelectedIndex());//GEN-BEGIN:|103-action|1|123-preAction
+        if (__selectedString != null) {
+            if (__selectedString.equals("burp \n another burp \n two burps")) {//GEN-END:|103-action|1|123-preAction
+                // write pre-action user code here
+//GEN-LINE:|103-action|2|123-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|103-action|3|103-postAction
+        }//GEN-END:|103-action|3|103-postAction
         // enter post-action user code here
-    }//GEN-BEGIN:|103-action|2|
-//</editor-fold>//GEN-END:|103-action|2|
+    }//GEN-BEGIN:|103-action|4|
+//</editor-fold>//GEN-END:|103-action|4|
 
 
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: task ">//GEN-BEGIN:|114-getter|0|114-preInit
-    /**
-     * Returns an initialized instance of task component.
-     *
-     * @return the initialized component instance
-     */
-    public SimpleCancellableTask getTask() {
-        if (task == null) {//GEN-END:|114-getter|0|114-preInit
-            // write pre-init user code here
-            task = new SimpleCancellableTask();//GEN-BEGIN:|114-getter|1|114-execute
-            task.setExecutable(new org.netbeans.microedition.util.Executable() {
-                public void execute() throws Exception {//GEN-END:|114-getter|1|114-execute
-// write task-execution user code here
-                }//GEN-BEGIN:|114-getter|2|114-postInit
-            });//GEN-END:|114-getter|2|114-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|114-getter|3|
-        return task;
-    }
-//</editor-fold>//GEN-END:|114-getter|3|
+
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Getter: waitScreen ">//GEN-BEGIN:|115-getter|0|115-preInit
     /**
@@ -581,32 +526,14 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     public ImageItem getImageItem() {
         if (imageItem == null) {//GEN-END:|116-getter|0|116-preInit
             // write pre-init user code here
-            imageItem = new ImageItem("imageItem", getImage1(), ImageItem.LAYOUT_DEFAULT, "<Missing Image>");//GEN-LINE:|116-getter|1|116-postInit
+            imageItem = new ImageItem("imageItem", null, ImageItem.LAYOUT_DEFAULT, "<Missing Image>");//GEN-LINE:|116-getter|1|116-postInit
             // write post-init user code here
         }//GEN-BEGIN:|116-getter|2|
         return imageItem;
     }
 //</editor-fold>//GEN-END:|116-getter|2|
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: image1 ">//GEN-BEGIN:|117-getter|0|117-preInit
-    /**
-     * Returns an initialized instance of image1 component.
-     *
-     * @return the initialized component instance
-     */
-    public Image getImage1() {
-        if (image1 == null) {//GEN-END:|117-getter|0|117-preInit
-            // write pre-init user code here
-            try {//GEN-BEGIN:|117-getter|1|117-@java.io.IOException
-                image1 = Image.createImage("/org/netbeans/microedition/resources/file.png");
-            } catch (java.io.IOException e) {//GEN-END:|117-getter|1|117-@java.io.IOException
-                e.printStackTrace();
-            }//GEN-LINE:|117-getter|2|117-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|117-getter|3|
-        return image1;
-    }
-//</editor-fold>//GEN-END:|117-getter|3|
+
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitCommand2 ">//GEN-BEGIN:|118-getter|0|118-preInit
     /**
@@ -623,6 +550,24 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         return exitCommand2;
     }
 //</editor-fold>//GEN-END:|118-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitCommand3 ">//GEN-BEGIN:|120-getter|0|120-preInit
+    /**
+     * Returns an initialized instance of exitCommand3 component.
+     *
+     * @return the initialized component instance
+     */
+    public Command getExitCommand3() {
+        if (exitCommand3 == null) {//GEN-END:|120-getter|0|120-preInit
+            // write pre-init user code here
+            exitCommand3 = new Command("Exit", Command.EXIT, 0);//GEN-LINE:|120-getter|1|120-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|120-getter|2|
+        return exitCommand3;
+    }
+//</editor-fold>//GEN-END:|120-getter|2|
+
+
 
 
 
