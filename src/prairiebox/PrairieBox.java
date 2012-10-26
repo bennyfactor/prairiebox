@@ -21,6 +21,8 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     public String httpstatus = "undefined error";
     private boolean midletPaused = false;
     public String[][] recentCheckins;
+    public String[][] nearbyVenues;
+    public static String lat, lon, alt, hac, vac;
     
     private LocationProvider locationProvider = null;
 
@@ -43,7 +45,6 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     private Command authpopupCommand;
     private Command savetokenCommand;
     private Command okCommand;
-    private Command exitCommand2;
     private Command exitCommand3;
     private Command checkinCommand;
     private Command exitCommand1;
@@ -169,7 +170,8 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                 // write post-action user code here
             } else if (command == okCommand1) {//GEN-LINE:|7-commandAction|9|144-preAction
                 // write pre-action user code here
-                verifyLocation();//GEN-LINE:|7-commandAction|10|144-postAction
+                nearbyVenues = Foursquare.nearbyVenues(tokenField.getString(), lat, lon, alt, hac, vac, 5);
+                switchDisplayable(null, getNearbyVenuesList());//GEN-LINE:|7-commandAction|10|144-postAction
                 // write post-action user code here
             }//GEN-BEGIN:|7-commandAction|11|137-preAction
         } else if (displayable == nearbyVenuesList) {
@@ -475,17 +477,19 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     public void verifyToken() {//GEN-END:|59-if|0|59-preIf
         // enter pre-if user code here
         //get token, prevent user from editing field or pressing button again
+        PrivateData.OAUTH_TOKEN = tokenField.getString();
         String token = tokenField.getString();
         tokenField.setString("PROCESSING");
         tokenField.setConstraints(TextField.UNEDITABLE);
         
         boolean tokenValid;
-        tokenValid = Foursquare.isTokenValid(token);
+        tokenValid = Foursquare.isTokenValid(PrivateData.OAUTH_TOKEN);
         if (tokenValid) {//GEN-LINE:|59-if|1|60-preAction
             // write pre-action user code here
-            recentCheckins =  Foursquare.recentCheckins(token, 5);
+            recentCheckins =  Foursquare.recentCheckins(PrivateData.OAUTH_TOKEN, 5);
             switchDisplayable(null, getRecentCheckinsList());//GEN-LINE:|59-if|2|60-postAction
             // write post-action user code here
+            tokenField.setString(token);
         } else {//GEN-LINE:|59-if|3|61-preAction
             // write pre-action user code here
             switchDisplayable(null, getBadTokenAlert());//GEN-LINE:|59-if|4|61-postAction
@@ -561,21 +565,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
 
 
 
-//<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitCommand2 ">//GEN-BEGIN:|118-getter|0|118-preInit
-    /**
-     * Returns an initialized instance of exitCommand2 component.
-     *
-     * @return the initialized component instance
-     */
-    public Command getExitCommand2() {
-        if (exitCommand2 == null) {//GEN-END:|118-getter|0|118-preInit
-            // write pre-init user code here
-            exitCommand2 = new Command("Exit", Command.EXIT, 0);//GEN-LINE:|118-getter|1|118-postInit
-            // write post-init user code here
-        }//GEN-BEGIN:|118-getter|2|
-        return exitCommand2;
-    }
-//</editor-fold>//GEN-END:|118-getter|2|
+
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitCommand3 ">//GEN-BEGIN:|120-getter|0|120-preInit
     /**
@@ -693,6 +683,16 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
             nearbyVenuesList.addCommand(getExitCommand4());
             nearbyVenuesList.setCommandListener(this);//GEN-END:|136-getter|1|136-postInit
             // write post-init user code here
+            if (nearbyVenues != null) {
+            for (int i = 0; i < nearbyVenues.length; i++) {
+                String[] venue = nearbyVenues[i];
+                nearbyVenuesList.append(venue[0], null);
+            
+                      }
+            } else {
+                nearbyVenuesList.append("No venues nearby", null);
+            }
+            nearbyVenuesList.append(PrivateData.debugmsg, null);
         }//GEN-BEGIN:|136-getter|2|
         return nearbyVenuesList;
     }
@@ -859,7 +859,14 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                     + "Lon: " + qc.getLongitude() + "\n"
                     + "Alt: " + qc.getAltitude() + "\n"
                     + "Acc: " + qc.getHorizontalAccuracy());
-            
+            info.setText("LOCK");
+            lat = ""+qc.getLatitude();
+            lon = ""+qc.getLongitude();
+            alt = ""+qc.getAltitude();
+            hac = ""+qc.getHorizontalAccuracy();
+            vac = ""+qc.getVerticalAccuracy();
+            //gpscoords[5] = ""+(System.currentTimeMillis()/1000L);
+                       
         }
     }
 

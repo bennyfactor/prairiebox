@@ -39,6 +39,7 @@
                 </Component>
                 <Component componentID="132" typeID="C#IfPoint">
                     <Property name="methodName" typeID="Pjava.lang.String" value="VverifyLocation"/>
+                    <Property name="condition" typeID="P#javacode" value="Vtrue"/>
                     <Property name="true" typeID="C#IfTrueEventSource" value="R133"/>
                     <Property name="false" typeID="C#IfFalseEventSource" value="R134"/>
                     <Component componentID="133" typeID="C#IfTrueEventSource">
@@ -239,12 +240,12 @@
                         <Property name="text" typeID="Pjava.lang.String" value="Vwaiting on GPS..."/>
                     </Component>
                     <Component componentID="144" typeID="C#CommandEventSource">
-                        <Property name="eventHandler" typeID="C#EventHandler" value="R145"/>
+                        <Property name="eventHandler" typeID="C#EventHandler" value="R150"/>
                         <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R124"/>
                         <Property name="command" typeID="Cjavax.microedition.lcdui.Command" value="R143"/>
-                        <Component componentID="145" typeID="C#MethodPointEventHandler">
+                        <Component componentID="150" typeID="C#SwitchDisplayableEventHandler">
                             <Property name="eventSource" typeID="C#EventSource" value="R144"/>
-                            <Property name="methodPoint" typeID="C#MethodPoint" value="R132"/>
+                            <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R136"/>
                         </Component>
                     </Component>
                 </Component>
@@ -359,12 +360,6 @@
                     <Property name="type" typeID="Pint" value="V1"/>
                     <Property name="priority" typeID="Pint" value="V0"/>
                     <Property name="ordinary" typeID="Pboolean" value="Vfalse"/>
-                </Component>
-                <Component componentID="118" typeID="Cjavax.microedition.lcdui.Command">
-                    <Property name="instanceName" typeID="Pjava.lang.String" value="VexitCommand2"/>
-                    <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
-                    <Property name="label" typeID="Pjava.lang.String" value="VExit"/>
-                    <Property name="type" typeID="Pint" value="V7"/>
                 </Component>
                 <Component componentID="120" typeID="Cjavax.microedition.lcdui.Command">
                     <Property name="instanceName" typeID="Pjava.lang.String" value="VexitCommand3"/>
