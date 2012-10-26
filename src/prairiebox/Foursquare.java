@@ -254,4 +254,98 @@ public class Foursquare {
         return(null);
     }
 
+    static String[][] Checkin(String token, String venueid, String shout, String lat, String lon) {
+            String[][] checkin;
+    checkin = new String[3][6];
+        checkin[0][0] = "Error"; //failsafe
+    String url;
+    String httpcontent;
+        httpcontent = null;
+    boolean valid; // check whether we actually got good data
+        valid = false;
+    
+    
+    //url = "https://api.foursquare.com/v2/checkins/recent?oauth_token=" + token + "&v=" + PrivateData.API_VERSION + "&=limit" + limit;
+    url = "https://api.foursquare.com/v2/checkins/add?ouath_token=" + token + "&v=" + PrivateData.API_VERSION + "&venueId=" + venueid + "&broadcast=public%2Ctwitter" + "&shout=" + shout + "&ll=" + lat + "," + lon;
+    PrivateData.debugmsg = "";
+    try {
+      // Query the server and retrieve the response.
+      HttpsConnection hc = (HttpsConnection)Connector.open(url, Connector.READ_WRITE, true);
+      hc.setRequestMethod(HttpsConnection.GET);
+      InputStream pagedata = hc.openInputStream();
+      int ch;
+      StringBuffer pagestring = new StringBuffer();
+      for(int ccnt=0; ccnt <= pagestring.length(); ccnt++) { // get the buffer.
+        ch = pagedata.read();
+        if (ch == -1){
+        break;
+        }
+        pagestring.append((char)ch);
+      }
+      //PrivateData.debugmsg = pagestring.toString() + url;
+      httpcontent = pagestring.toString();
+      
+
+      hc.close();
+   }
+    catch (IOException ioe) {
+      System.out.println("HTTPS Exception" + ioe.toString());
+      PrivateData.debugmsg = "Error. Can't make https connections.";     
+    }
+    
+    // check if we get a code 200 OK from foursquare, means token is valid
+    try {
+        JSONObject json = new JSONObject(httpcontent);
+        JSONObject meta = new JSONObject(json.getString("meta"));
+       
+        //PrivateData.debugmsg = meta.getString("code");
+        
+        // read json response if request returned valid
+        if ("200".equals(meta.getString("code"))) {  
+            // get the response json object
+            JSONObject response = new JSONObject(json.getString("response"));
+            // get the array (why isn't this an object? It's [] vs {} in JSON) of the recent checkins
+            JSONArray notifications = new JSONArray(response.getString("notifications"));
+            
+            //loop gets data from JSONArray for parsing. Each array index is a new recent check-in item
+            for (int i = 0; i < notifications.length(); i++) {
+                JSONObject get = new JSONObject(notifications.getString(i));
+                //get Check-in okay message
+                if ("message".equals(get.getString("type"))) {
+                    JSONObject item = new JSONObject(get.getString("item"));
+                    checkin[0][0] = item.getString("message");
+                }
+                //get scores
+                // type: score, item: { total: X scores: [ {points: x, icon: y, message: z}, ... {points: x, icon y, message: z} ] }
+                if ("score".equals(get.getString("type"))) {
+                    JSONObject item = new JSONObject(get.getString("item"));
+                    checkin[1][0] = item.getString("total");
+                    //scores array
+                    JSONArray scores = new JSONArray(item.getString("scores"));
+                    //for loop that gets the x y and z of each individual point score, make array 2D 
+                    for (int j = 0; j < scores.length(); j++) {
+                        JSONObject getscore = new JSONObject(scores.getString(j));
+                        checkin[2][j] = "+" + getscore.getString("points") + " " + getscore.getString("message");
+                        
+                    }
+                }
+            }
+        }
+        //PrivateData.debugmsg = "";
+    }
+    catch (JSONException joe) {
+        System.out.println("JSON Decode Exception" + joe.toString());
+        PrivateData.debugmsg = "Error. Can't decode JSON";
+    }
+    
+    
+    return (checkin);
+
+        
+        
+        
+        
+        
+    }
+
 }

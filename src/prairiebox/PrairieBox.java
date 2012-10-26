@@ -27,6 +27,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     private LocationProvider locationProvider = null;
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
+    private List nearbyVenuesList;
     private SplashScreen splashScreen;
     private Form authScreen;
     private TextField tokenField;
@@ -35,22 +36,21 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     private StringItem authScreenExplainer;
     private Spacer authScreenSpacer2;
     private Spacer authScreenSpacer1;
+    private Alert noGPSLockAlert;
     private Alert badTokenAlert;
     private List recentCheckinsList;
     private Form currentLocation;
     private StringItem info;
-    private List nearbyVenuesList;
-    private Alert noGPSLockAlert;
+    private Command exitCommand4;
+    private Command okCommand1;
+    private Command exitCommand1;
     private Command exitCommand;
+    private Command okCommand2;
     private Command authpopupCommand;
     private Command savetokenCommand;
     private Command okCommand;
-    private Command exitCommand3;
     private Command checkinCommand;
-    private Command exitCommand1;
-    private Command exitCommand4;
-    private Command okCommand1;
-    private Command okCommand2;
+    private Command exitCommand3;
 //</editor-fold>//GEN-END:|fields|0|
 
     /**
@@ -680,9 +680,12 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         if (nearbyVenuesList == null) {//GEN-END:|136-getter|0|136-preInit
             // write pre-init user code here
             nearbyVenuesList = new List("list", Choice.IMPLICIT);//GEN-BEGIN:|136-getter|1|136-postInit
+            nearbyVenuesList.append("dummy", null);
             nearbyVenuesList.addCommand(getExitCommand4());
-            nearbyVenuesList.setCommandListener(this);//GEN-END:|136-getter|1|136-postInit
+            nearbyVenuesList.setCommandListener(this);
+            nearbyVenuesList.setSelectedFlags(new boolean[]{false});//GEN-END:|136-getter|1|136-postInit
             // write post-init user code here
+            nearbyVenuesList.delete(0);
             if (nearbyVenues != null) {
             for (int i = 0; i < nearbyVenues.length; i++) {
                 String[] venue = nearbyVenues[i];
@@ -705,10 +708,25 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
      */
     public void nearbyVenuesListAction() {//GEN-END:|136-action|0|136-preAction
         // enter pre-action user code here
-        String __selectedString = getNearbyVenuesList().getString(getNearbyVenuesList().getSelectedIndex());//GEN-LINE:|136-action|1|136-postAction
+        String __selectedString = getNearbyVenuesList().getString(getNearbyVenuesList().getSelectedIndex());//GEN-BEGIN:|136-action|1|151-preAction
+        if (__selectedString != null) {
+            if (__selectedString.equals("dummy")) {//GEN-END:|136-action|1|151-preAction
+                // write pre-action user code here
+//GEN-LINE:|136-action|2|151-postAction
+              /*  // write post-action user code here
+            }//GEN-BEGIN:|136-action|3|136-postAction
+        }//GEN-END:|136-action|3|136-postAction
+        */  }
+            
         // enter post-action user code here
-    }//GEN-BEGIN:|136-action|2|
-//</editor-fold>//GEN-END:|136-action|2|
+         int __selectedIndex = getNearbyVenuesList().getSelectedIndex();
+         //if (__selectedIndex != null) {
+        // //pseudocode: nearbyVenues[__selectedIndex][1] = venueid for lookup
+        // //https://api.foursquare.com/v2/checkins/add?v=20120321&venueId=VENUE_ID&broadcast=public,twitter&ll=LAT%2CLON&llAcc=HAC&alt=ALT&altAcc=VAC
+        Foursquare.Checkin(tokenField.getString(), nearbyVenues[__selectedIndex][1], ""/*shout*/, lat, lon);
+        }
+    }//GEN-BEGIN:|136-action|4|
+//</editor-fold>//GEN-END:|136-action|4|
 
 //<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitCommand4 ">//GEN-BEGIN:|140-getter|0|140-preInit
     /**
@@ -859,7 +877,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                     + "Lon: " + qc.getLongitude() + "\n"
                     + "Alt: " + qc.getAltitude() + "\n"
                     + "Acc: " + qc.getHorizontalAccuracy());
-            info.setText("LOCK");
+            //info.setText("LOCK");
             lat = ""+qc.getLatitude();
             lon = ""+qc.getLongitude();
             alt = ""+qc.getAltitude();
