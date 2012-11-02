@@ -269,7 +269,7 @@
                     <Property name="commands" typeID="1C#CommandEventSource" value="A2:4_R1294_R144"/>
                     <Property name="title" typeID="Pjava.lang.String" value="VCurrent Location"/>
                     <Property name="commandListener" typeID="C#CommandListener" value="R7"/>
-                    <Property name="items" typeID="1Cjavax.microedition.lcdui.Item" value="A1:4_R131"/>
+                    <Property name="items" typeID="1Cjavax.microedition.lcdui.Item" value="A2:4_R1314_R152"/>
                     <Component componentID="129" typeID="C#CommandEventSource">
                         <Property name="eventHandler" typeID="C#EventHandler" value="R130"/>
                         <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R124"/>
@@ -285,6 +285,13 @@
                         <Property name="label" typeID="Pjava.lang.String" value="VCurrent Location:"/>
                         <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R8"/>
                         <Property name="text" typeID="Pjava.lang.String" value="Vwaiting on GPS..."/>
+                    </Component>
+                    <Component componentID="152" typeID="Cjavax.microedition.lcdui.StringItem">
+                        <Property name="instanceName" typeID="Pjava.lang.String" value="VstringItem"/>
+                        <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
+                        <Property name="label" typeID="Pjava.lang.String" value="Vdebug"/>
+                        <Property name="itemCommandListener" typeID="C#ItemCommandListener" value="R8"/>
+                        <Property name="text" typeID="Pjava.lang.String" value="U(lat + &quot;, &quot; + lon + &quot;, &quot; + &quot;, &quot; + alt + &quot; hac &quot; + hac + &quot; vac &quot; + vac)"/>
                     </Component>
                     <Component componentID="144" typeID="C#CommandEventSource">
                         <Property name="eventHandler" typeID="C#EventHandler" value="R150"/>
@@ -408,15 +415,15 @@
         </Component>
     </Document>
     <FlowScene version="1">
-        <Node componentID="2" descriptorID="componentNode2" x="115" y="19"/>
-        <Node componentID="103" descriptorID="componentNode103" x="389" y="191"/>
-        <Node componentID="146" descriptorID="componentNode146" x="894" y="295"/>
-        <Node componentID="132" descriptorID="componentNode132" x="898" y="179"/>
-        <Node componentID="136" descriptorID="componentNode136" x="962" y="14"/>
-        <Node componentID="59" descriptorID="componentNode59" x="609" y="286"/>
-        <Node componentID="124" descriptorID="componentNode124" x="571" y="91"/>
-        <Node componentID="14" descriptorID="componentNode14" x="5" y="359"/>
         <Node componentID="55" descriptorID="componentNode55" x="760" y="383"/>
+        <Node componentID="2" descriptorID="componentNode2" x="115" y="19"/>
         <Node componentID="23" descriptorID="componentNode23" x="221" y="293"/>
+        <Node componentID="136" descriptorID="componentNode136" x="962" y="14"/>
+        <Node componentID="132" descriptorID="componentNode132" x="898" y="179"/>
+        <Node componentID="59" descriptorID="componentNode59" x="609" y="286"/>
+        <Node componentID="146" descriptorID="componentNode146" x="894" y="295"/>
+        <Node componentID="14" descriptorID="componentNode14" x="5" y="359"/>
+        <Node componentID="103" descriptorID="componentNode103" x="389" y="191"/>
+        <Node componentID="124" descriptorID="componentNode124" x="571" y="91"/>
     </FlowScene>
 </VisualDesign>

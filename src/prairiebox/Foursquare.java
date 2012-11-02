@@ -186,7 +186,7 @@ public class Foursquare {
         valid = false;
     
     
-    url = "https://api.foursquare.com/v2/venues/search?oauth_token=" + token + "&v=" + PrivateData.API_VERSION + "&ll="+lon+","+lat + "&alt=" + alt + "&llAcc=" + hac + "&altAcc=" + vac + "&limit=" + limit;
+    url = "https://api.foursquare.com/v2/venues/search?oauth_token=" + token + "&v=" + PrivateData.API_VERSION + "&ll="+lat+","+lon + "&alt=" + alt + "&llAcc=" + hac + "&altAcc=" + vac + "&limit=" + limit +"&intent=checkin";
     PrivateData.debugmsg = "";
     try {
       // Query the server and retrieve the response.
@@ -228,9 +228,8 @@ public class Foursquare {
             JSONArray recent = new JSONArray(response.getString("venues"));
             
             //loop gets data from JSONArray for parsing. Each array index is a new recent check-in item
-            for (int i = 0; i < limit; i++) {
+            for (int i = 0; i < recent.length(); i++) {
                 JSONObject get = new JSONObject(recent.getString(i));
-                
                 //venue name
                 venues[i][0] = get.getString("name");
                 //venue id
@@ -244,7 +243,7 @@ public class Foursquare {
         PrivateData.debugmsg = "Error. Can't decode JSON" + httpcontent;
     }
     
-    
+    PrivateData.debugmsg += url;
     return (venues);
     } 
             
