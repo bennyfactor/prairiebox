@@ -6,6 +6,7 @@ package prairiebox;
 
 import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.*;
+import javax.microedition.location.Criteria;
 import javax.microedition.location.Location;
 import javax.microedition.location.LocationListener;
 import javax.microedition.location.LocationProvider;
@@ -18,7 +19,7 @@ import org.netbeans.microedition.lcdui.SplashScreen;
  */
 public class PrairieBox extends MIDlet implements CommandListener, ItemCommandListener, LocationListener{
 
-    public String httpstatus = "undefined error";
+    public String httpstatus = "Very slow data connection."; //this only shows if HTTPSTest isn't completed before splash screen dismisses
     private boolean midletPaused = false;
     public String[][] recentCheckins;
     public String[][] nearbyVenues;
@@ -42,6 +43,8 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     private Form currentLocation;
     private StringItem info;
     private StringItem stringItem;
+    private Form checkedIn;
+    private StringItem checkInString;
     private Command exitCommand4;
     private Command okCommand1;
     private Command exitCommand1;
@@ -52,20 +55,28 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     private Command okCommand;
     private Command checkinCommand;
     private Command exitCommand3;
+    private Command okCommand3;
+    private Command exitCommand2;
 //</editor-fold>//GEN-END:|fields|0|
 
     /**
      * The PrairieBox constructor.
      */
     public PrairieBox() {
-
+        //Location Provider instance criteria
+        Criteria criteria = new Criteria();
+        criteria.setCostAllowed(true);
+        criteria.setPreferredPowerConsumption(Criteria.POWER_USAGE_HIGH);
+        criteria.setPreferredResponseTime(5000);
+        
+        
         try {
-            locationProvider = LocationProvider.getInstance(null);
+            locationProvider = LocationProvider.getInstance(criteria);
         } catch (Exception e) {
             info.setText("Error. GPS subsystem unavailable. " + e);
         }
-    lat = "40.675138";
-    lon = "-73.980925";
+    lat = "39.175278"; 
+    lon = "-76.668333";
     alt = "12";
     hac = "800";
     vac = "800";
@@ -165,49 +176,57 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                 // write pre-action user code here
                 switchDisplayable(null, getAuthScreen());//GEN-LINE:|7-commandAction|6|57-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|7|129-preAction
+            }//GEN-BEGIN:|7-commandAction|7|158-preAction
+        } else if (displayable == checkedIn) {
+            if (command == exitCommand2) {//GEN-END:|7-commandAction|7|158-preAction
+                // write pre-action user code here
+                exitMIDlet();//GEN-LINE:|7-commandAction|8|158-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|9|129-preAction
         } else if (displayable == currentLocation) {
-            if (command == exitCommand1) {//GEN-END:|7-commandAction|7|129-preAction
+            if (command == exitCommand1) {//GEN-END:|7-commandAction|9|129-preAction
                 // write pre-action user code here
                 //kill off GPS data thread
                 new Thread() {
                     public void run() {
+                       
                         locationProvider.setLocationListener(null, -1, -1, -1);
+                        
                     }
                 }.start();	  
-                exitMIDlet();//GEN-LINE:|7-commandAction|8|129-postAction
+                exitMIDlet();//GEN-LINE:|7-commandAction|10|129-postAction
                 // write post-action user code here
-            } else if (command == okCommand1) {//GEN-LINE:|7-commandAction|9|144-preAction
+            } else if (command == okCommand1) {//GEN-LINE:|7-commandAction|11|144-preAction
                 // write pre-action user code here
                 stringItem.setText("Processing");
                 nearbyVenues = Foursquare.nearbyVenues(PrivateData.OAUTH_TOKEN, lat, lon, alt, hac, vac, 5);
                 stringItem.setText("finished");
                 stringItem.setText(nearbyVenues[0][0] + PrivateData.debugmsg);
-                switchDisplayable(null, getNearbyVenuesList());//GEN-LINE:|7-commandAction|10|144-postAction
+                switchDisplayable(null, getNearbyVenuesList());//GEN-LINE:|7-commandAction|12|144-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|11|137-preAction
+            }//GEN-BEGIN:|7-commandAction|13|137-preAction
         } else if (displayable == nearbyVenuesList) {
-            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|11|137-preAction
+            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|13|137-preAction
                 // write pre-action user code here
-                nearbyVenuesListAction();//GEN-LINE:|7-commandAction|12|137-postAction
+                nearbyVenuesListAction();//GEN-LINE:|7-commandAction|14|137-postAction
                 // write post-action user code here
-            } else if (command == exitCommand4) {//GEN-LINE:|7-commandAction|13|141-preAction
+            } else if (command == exitCommand4) {//GEN-LINE:|7-commandAction|15|141-preAction
                 // write pre-action user code here
-                exitMIDlet();//GEN-LINE:|7-commandAction|14|141-postAction
+                exitMIDlet();//GEN-LINE:|7-commandAction|16|141-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|15|148-preAction
+            }//GEN-BEGIN:|7-commandAction|17|148-preAction
         } else if (displayable == noGPSLockAlert) {
-            if (command == okCommand2) {//GEN-END:|7-commandAction|15|148-preAction
+            if (command == okCommand2) {//GEN-END:|7-commandAction|17|148-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getCurrentLocation());//GEN-LINE:|7-commandAction|16|148-postAction
+                switchDisplayable(null, getCurrentLocation());//GEN-LINE:|7-commandAction|18|148-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|17|105-preAction
+            }//GEN-BEGIN:|7-commandAction|19|105-preAction
         } else if (displayable == recentCheckinsList) {
-            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|17|105-preAction
+            if (command == List.SELECT_COMMAND) {//GEN-END:|7-commandAction|19|105-preAction
                 // write pre-action user code here
-                recentCheckinsListAction();//GEN-LINE:|7-commandAction|18|105-postAction
+                recentCheckinsListAction();//GEN-LINE:|7-commandAction|20|105-postAction
                 // write post-action user code here
-            } else if (command == checkinCommand) {//GEN-LINE:|7-commandAction|19|126-preAction
+            } else if (command == checkinCommand) {//GEN-LINE:|7-commandAction|21|126-preAction
                 // write pre-action user code here
                 //start parallel thread to get GPS data
                 new Thread() {
@@ -215,23 +234,23 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                         locationProvider.setLocationListener(PrairieBox.this, 1, -1, -1);
                     }
                 }.start();
-                switchDisplayable(null, getCurrentLocation());//GEN-LINE:|7-commandAction|20|126-postAction
+                switchDisplayable(null, getCurrentLocation());//GEN-LINE:|7-commandAction|22|126-postAction
                 // write post-action user code here
-            } else if (command == exitCommand3) {//GEN-LINE:|7-commandAction|21|121-preAction
+            } else if (command == exitCommand3) {//GEN-LINE:|7-commandAction|23|121-preAction
                 // write pre-action user code here
-                exitMIDlet();//GEN-LINE:|7-commandAction|22|121-postAction
+                exitMIDlet();//GEN-LINE:|7-commandAction|24|121-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|23|16-preAction
+            }//GEN-BEGIN:|7-commandAction|25|16-preAction
         } else if (displayable == splashScreen) {
-            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|23|16-preAction
+            if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|25|16-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getAuthScreen());//GEN-LINE:|7-commandAction|24|16-postAction
+                switchDisplayable(null, getAuthScreen());//GEN-LINE:|7-commandAction|26|16-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|25|7-postCommandAction
-        }//GEN-END:|7-commandAction|25|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|27|7-postCommandAction
+        }//GEN-END:|7-commandAction|27|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|26|
-//</editor-fold>//GEN-END:|7-commandAction|26|
+    }//GEN-BEGIN:|7-commandAction|28|
+//</editor-fold>//GEN-END:|7-commandAction|28|
 
 
 
@@ -712,7 +731,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
             } else {
                 nearbyVenuesList.append("No venues nearby", null);
             }
-            nearbyVenuesList.append(PrivateData.debugmsg, null);
+            //nearbyVenuesList.append(PrivateData.debugmsg, null);
         }//GEN-BEGIN:|136-getter|2|
         return nearbyVenuesList;
     }
@@ -729,7 +748,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         if (__selectedString != null) {
             if (__selectedString.equals("dummy")) {//GEN-END:|136-action|1|151-preAction
                 // write pre-action user code here
-//GEN-LINE:|136-action|2|151-postAction
+                switchDisplayable(null, getCheckedIn());//GEN-LINE:|136-action|2|151-postAction
               /*  // write post-action user code here
 //GEN-BEGIN:|136-action|3|136-postAction
                  }
@@ -738,10 +757,12 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
             
         // enter post-action user code here
          int __selectedIndex = getNearbyVenuesList().getSelectedIndex();
-         //if (__selectedIndex != null) {
         // //pseudocode: nearbyVenues[__selectedIndex][1] = venueid for lookup
         // //https://api.foursquare.com/v2/checkins/add?v=20120321&venueId=VENUE_ID&broadcast=public,twitter&ll=LAT%2CLON&llAcc=HAC&alt=ALT&altAcc=VAC
-        Foursquare.Checkin(tokenField.getString(), nearbyVenues[__selectedIndex][1], ""/*shout*/, lat, lon);
+        nearbyVenuesList.setTitle("processing");
+         checkInString.setText(Foursquare.Checkin(PrivateData.OAUTH_TOKEN, nearbyVenues[__selectedIndex][1], ""/*shout*/, lat, lon).toString());
+        nearbyVenuesList.setTitle("processed");
+         switchDisplayable(null, getCheckedIn());
         }
     }//GEN-BEGIN:|136-action|4|
 //</editor-fold>//GEN-END:|136-action|4|
@@ -830,6 +851,72 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     }
 //</editor-fold>//GEN-END:|152-getter|2|
 
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: okCommand3 ">//GEN-BEGIN:|153-getter|0|153-preInit
+    /**
+     * Returns an initialized instance of okCommand3 component.
+     *
+     * @return the initialized component instance
+     */
+    public Command getOkCommand3() {
+        if (okCommand3 == null) {//GEN-END:|153-getter|0|153-preInit
+            // write pre-init user code here
+            okCommand3 = new Command("Ok", Command.OK, 0);//GEN-LINE:|153-getter|1|153-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|153-getter|2|
+        return okCommand3;
+    }
+//</editor-fold>//GEN-END:|153-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: checkedIn ">//GEN-BEGIN:|155-getter|0|155-preInit
+    /**
+     * Returns an initialized instance of checkedIn component.
+     *
+     * @return the initialized component instance
+     */
+    public Form getCheckedIn() {
+        if (checkedIn == null) {//GEN-END:|155-getter|0|155-preInit
+            // write pre-init user code here
+            checkedIn = new Form("Check In", new Item[]{getCheckInString()});//GEN-BEGIN:|155-getter|1|155-postInit
+            checkedIn.addCommand(getExitCommand2());
+            checkedIn.setCommandListener(this);//GEN-END:|155-getter|1|155-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|155-getter|2|
+        return checkedIn;
+    }
+//</editor-fold>//GEN-END:|155-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: exitCommand2 ">//GEN-BEGIN:|157-getter|0|157-preInit
+    /**
+     * Returns an initialized instance of exitCommand2 component.
+     *
+     * @return the initialized component instance
+     */
+    public Command getExitCommand2() {
+        if (exitCommand2 == null) {//GEN-END:|157-getter|0|157-preInit
+            // write pre-init user code here
+            exitCommand2 = new Command("Exit", Command.EXIT, 0);//GEN-LINE:|157-getter|1|157-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|157-getter|2|
+        return exitCommand2;
+    }
+//</editor-fold>//GEN-END:|157-getter|2|
+
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: checkInString ">//GEN-BEGIN:|160-getter|0|160-preInit
+    /**
+     * Returns an initialized instance of checkInString component.
+     *
+     * @return the initialized component instance
+     */
+    public StringItem getCheckInString() {
+        if (checkInString == null) {//GEN-END:|160-getter|0|160-preInit
+            // write pre-init user code here
+            checkInString = new StringItem("Reply \n", null);//GEN-LINE:|160-getter|1|160-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|160-getter|2|
+        return checkInString;
+    }
+//</editor-fold>//GEN-END:|160-getter|2|
+
 
 
 
@@ -906,18 +993,30 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     // location stuff
     public void locationUpdated(LocationProvider provider, Location location) {
         if (location != null && location.isValid()) {
+            
+            //get coordinates
             QualifiedCoordinates qc = location.getQualifiedCoordinates();
+            
+            //see which method was used to get coordinates
+            String method = GPS.method(location.getLocationMethod());
+
+            
+            //display coordinates
             info.setText(
                     "Lat: " + qc.getLatitude() + "\n"
                     + "Lon: " + qc.getLongitude() + "\n"
                     + "Alt: " + qc.getAltitude() + "\n"
-                    + "Acc: " + qc.getHorizontalAccuracy());
-            //info.setText("LOCK");
-          //  lat = ""+qc.getLatitude();
-          //  lon = ""+qc.getLongitude();
-          //  alt = ""+qc.getAltitude();
-          //  hac = ""+qc.getHorizontalAccuracy();
-          //  vac = ""+qc.getVerticalAccuracy();
+                    + "Acc: " + qc.getHorizontalAccuracy() + "\n"
+                    + method + "\n" 
+                    + System.getProperty("microedition.platform")
+                    );
+            
+            //set variables with gotten coordinates
+            lat = ""+qc.getLatitude();
+            lon = ""+qc.getLongitude();
+            alt = ""+qc.getAltitude();
+            hac = ""+qc.getHorizontalAccuracy();
+            vac = ""+qc.getVerticalAccuracy();
             //gpscoords[5] = ""+(System.currentTimeMillis()/1000L);
                        
         }
