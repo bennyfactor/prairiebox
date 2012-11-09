@@ -265,7 +265,7 @@ public class Foursquare {
     
     
     //url = "https://api.foursquare.com/v2/checkins/recent?oauth_token=" + token + "&v=" + PrivateData.API_VERSION + "&=limit" + limit;
-    url = "https://api.foursquare.com/v2/checkins/add?ouath_token=" + token + "&v=" + PrivateData.API_VERSION + "&venueId=" + venueid + "&broadcast=public%2Ctwitter" + "&shout=" + shout + "&ll=" + lat + "," + lon;
+    url = "https://api.foursquare.com/v2/checkins/add?oauth_token=" + token + "&v=" + PrivateData.API_VERSION + "&venueId=" + venueid + "&broadcast=public%2Ctwitter" + "&shout=" + shout + "&ll=" + lat + "," + lon;
     PrivateData.debugmsg = "";
     try {
       // Query the server and retrieve the response.
