@@ -270,7 +270,7 @@ public class Foursquare {
     try {
       // Query the server and retrieve the response.
       HttpsConnection hc = (HttpsConnection)Connector.open(url, Connector.READ_WRITE, true);
-      hc.setRequestMethod(HttpsConnection.GET);
+      hc.setRequestMethod(HttpsConnection.POST);
       InputStream pagedata = hc.openInputStream();
       int ch;
       StringBuffer pagestring = new StringBuffer();
@@ -337,7 +337,7 @@ public class Foursquare {
         PrivateData.debugmsg = "Error. Can't decode JSON";
     }
     
-    
+    PrivateData.debugmsg += httpcontent;
     return (checkin);
 
         

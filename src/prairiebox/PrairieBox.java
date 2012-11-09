@@ -30,6 +30,8 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
 //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
     private List nearbyVenuesList;
     private SplashScreen splashScreen;
+    private Form checkedIn;
+    private StringItem checkInString;
     private Form authScreen;
     private TextField tokenField;
     private StringItem connectionstatusItem;
@@ -43,11 +45,11 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     private Form currentLocation;
     private StringItem info;
     private StringItem stringItem;
-    private Form checkedIn;
-    private StringItem checkInString;
     private Command exitCommand4;
     private Command okCommand1;
     private Command exitCommand1;
+    private Command okCommand3;
+    private Command exitCommand2;
     private Command exitCommand;
     private Command okCommand2;
     private Command authpopupCommand;
@@ -55,8 +57,6 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     private Command okCommand;
     private Command checkinCommand;
     private Command exitCommand3;
-    private Command okCommand3;
-    private Command exitCommand2;
 //</editor-fold>//GEN-END:|fields|0|
 
     /**
@@ -760,8 +760,9 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         // //pseudocode: nearbyVenues[__selectedIndex][1] = venueid for lookup
         // //https://api.foursquare.com/v2/checkins/add?v=20120321&venueId=VENUE_ID&broadcast=public,twitter&ll=LAT%2CLON&llAcc=HAC&alt=ALT&altAcc=VAC
         nearbyVenuesList.setTitle("processing");
-         checkInString.setText(Foursquare.Checkin(PrivateData.OAUTH_TOKEN, nearbyVenues[__selectedIndex][1], ""/*shout*/, lat, lon).toString());
-        nearbyVenuesList.setTitle("processed");
+        checkInString.setText(Foursquare.Checkin(PrivateData.OAUTH_TOKEN, nearbyVenues[__selectedIndex][1], ""/*shout*/, lat, lon).toString());
+        //nearbyVenuesList.append(PrivateData.debugmsg, null);
+         nearbyVenuesList.setTitle("processed");
          switchDisplayable(null, getCheckedIn());
         }
     }//GEN-BEGIN:|136-action|4|
