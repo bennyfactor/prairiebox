@@ -150,10 +150,10 @@ public class Foursquare {
                 //get checkin venue location, use opts in case info is unavailable
                 JSONObject location = new JSONObject(venue.optString("location"));
                 checkins[i][3] =  location.optString("city") + ", " + location.optString("state") + ", " + location.optString("cc") ;
-                //get checkin time, use HowLongAgo to give a human readable time
+                //get checkin time, use Utilities to give a human readable time
                                                         //L makes this a long, too
                 long now = System.currentTimeMillis() / 1000L;
-                checkins[i][4]= HowLongAgo.epoch((int) now, get.optInt("createdAt"));
+                checkins[i][4]= Utilities.epoch((int) now, get.optInt("createdAt"));
                 checkins[i][5] = user.optString("photo");
             }
         }

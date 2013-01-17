@@ -4,6 +4,8 @@
  */
 package prairiebox;
 
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import javax.microedition.io.ConnectionNotFoundException;
 import javax.microedition.lcdui.*;
 import javax.microedition.location.Criteria;
@@ -13,6 +15,7 @@ import javax.microedition.location.LocationProvider;
 import javax.microedition.location.QualifiedCoordinates;
 import javax.microedition.midlet.*;
 import org.netbeans.microedition.lcdui.SplashScreen;
+
 
 /**
  * @author benlamb
@@ -217,7 +220,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
             }//GEN-BEGIN:|7-commandAction|17|148-preAction
         } else if (displayable == noGPSLockAlert) {
             if (command == okCommand2) {//GEN-END:|7-commandAction|17|148-preAction
-                // write pre-action user code here
+                
                 switchDisplayable(null, getCurrentLocation());//GEN-LINE:|7-commandAction|18|148-postAction
                 // write post-action user code here
             }//GEN-BEGIN:|7-commandAction|19|105-preAction
@@ -231,11 +234,16 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                 //start parallel thread to get GPS data
                 new Thread() {
                     public void run() {
-                        locationProvider.setLocationListener(PrairieBox.this, 1, -1, -1);
+                        locationProvider.setLocationListener(PrairieBox.this, 1, -1, -1);                       
+
                     }
                 }.start();
                 switchDisplayable(null, getCurrentLocation());//GEN-LINE:|7-commandAction|22|126-postAction
                 // write post-action user code here
+                //start parallel thread to get google pseudogps data
+                pseudogps googlecellapi = new pseudogps();
+                googlecellapi.start();
+
             } else if (command == exitCommand3) {//GEN-LINE:|7-commandAction|23|121-preAction
                 // write pre-action user code here
                 exitMIDlet();//GEN-LINE:|7-commandAction|24|121-postAction
@@ -266,7 +274,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
             splashScreen = new SplashScreen(getDisplay());//GEN-BEGIN:|14-getter|1|14-postInit
             splashScreen.setTitle("Prairie Box");
             splashScreen.setCommandListener(this);
-            splashScreen.setText("Prairie Box");//GEN-END:|14-getter|1|14-postInit
+            splashScreen.setText("version " + getAppProperty("MIDlet-Version"));//GEN-END:|14-getter|1|14-postInit
             // write post-init user code here
         }//GEN-BEGIN:|14-getter|2|
         return splashScreen;
@@ -647,7 +655,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     public StringItem getInfo() {
         if (info == null) {//GEN-END:|131-getter|0|131-preInit
             // write pre-init user code here
-            info = new StringItem("Current Location:", "waiting on GPS...");//GEN-LINE:|131-getter|1|131-postInit
+            info = new StringItem("Current Location:", ("waiting on GPS..."));//GEN-LINE:|131-getter|1|131-postInit
             // write post-init user code here
         }//GEN-BEGIN:|131-getter|2|
         return info;
@@ -845,7 +853,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         if (stringItem == null) {//GEN-END:|152-getter|0|152-preInit
             // write pre-init user code here
             //String cat = lat + ", " + lon + ", " + ", " + alt + " hac " + hac + " vac " + vac;
-            stringItem = new StringItem("debug", (lat + ", " + lon + ", " + ", " + alt + " hac " + hac + " vac " + vac));//GEN-LINE:|152-getter|1|152-postInit
+            stringItem = new StringItem("debug", "");//GEN-LINE:|152-getter|1|152-postInit
  // write post-init user code here
         }//GEN-BEGIN:|152-getter|2|
         return stringItem;
@@ -1026,6 +1034,25 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     public void providerStateChanged(LocationProvider provider,
             int newState) {
     }
+
+    public class pseudogps extends Thread {
+
+        public void run() {
+            boolean quit = false;
+            try {
+                Thread.sleep(2000);
+                stringItem.setText(cellid.getlocation());
+            } catch (UnsupportedEncodingException ex) {
+                ex.printStackTrace();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+
+        
+    }
+
 
     
 }

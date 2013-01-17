@@ -15,7 +15,7 @@ package prairiebox;
  * 
  * 
  */
-public class HowLongAgo {
+public class Utilities extends PrairieBox {
     /**
      * Returns human-readable comparison of two unix epochs (int recent, int distant)
      * This is in SECONDS not MILLISECONDS
@@ -44,5 +44,9 @@ public class HowLongAgo {
         }
         return(returnstring);
     }
+    
+
+
+
     
 }
