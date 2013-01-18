@@ -18,39 +18,39 @@ import org.json.me.JSONObject;
  * @author benlamb
  */
 public class cellid {
-    public static String cellid = System.getProperty("com.sonyericsson.net.cellid");
-    public static String lac = System.getProperty("com.sonyericsson.net.lac");
-    public static String mcc = System.getProperty("com.sonyericsson.net.mcc");
-    public static String mnc = System.getProperty("com.sonyericsson.net.mnc");
+    public static int cellid = Integer.parseInt(System.getProperty("com.sonyericsson.net.cellid").toString(),16);
+    public static int lac    = Integer.parseInt(System.getProperty("com.sonyericsson.net.lac").toString(),16);
+    public static String mcc = System.getProperty("com.sonyericsson.net.cmcc");
+    public static String mnc = System.getProperty("com.sonyericsson.net.cmnc");
     
     public static String getlocation() throws UnsupportedEncodingException {
         String location;
+        String responsecode = "999";
         
         
-        String postObject  = "{ \"radioType\": \"gsm\",\"cellTowers\": [ { ";
-               postObject += "\"cellId\": " + cellid + ", ";
-               postObject += "\"locationAreaCode\": " + lac + ", ";
-               postObject += "\"mobileCountryCode\": " + mcc + ", ";
-               postObject += "\"mobileNetworkCode\": " + mnc;
-               postObject += " } ] }";
-        byte[] postData = postObject.getBytes();
+        String postObject  = "{ \"radioType\":  \"gsm\", \n \"cellTowers\": [ \n  { \n   \"mobileNetworkCode\": "+mnc+", \n   \"cellId\": "+cellid+", \n   \"locationAreaCode\": "+lac+", \n   \"mobileCountryCode\": "+mcc+", \n   \"age\": 0 \n  } \n ] \n}";
+        
+        byte postData[] = postObject.getBytes();
 
         
         //set up the connection
         String url;
         String httpcontent = null;
 
-    /*    url = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + PrivateData.GOOGLE_API_KEY;
+        url = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + PrivateData.GOOGLE_API_KEY;
         PrivateData.debugmsg = "";
         try {
           // Query the server and retrieve the response.
           HttpsConnection hc = (HttpsConnection)Connector.open(url);
           hc.setRequestMethod(HttpsConnection.POST);
           hc.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
-          hc.setRequestProperty("Content-Length", Integer.toString(postData.length));
+          //hc.setRequestProperty("Content-Length", Integer.toString(postData.length));
           OutputStream os = hc.openOutputStream(); //dump the json into the POST message as an outputstream
-            os.write(postData);
-            os.flush();
+          for(int i=0;i<postData.length;i++) {
+            os.write(postData[i]);
+          }
+          os.flush();
+
             os.close(); //finish the dump
 
 
@@ -68,32 +68,26 @@ public class cellid {
           //PrivateData.debugmsg = pagestring.toString() + url;
           httpcontent = pagestring.toString();
 
-
+          //google doesn't put the response code in the JSON so we get it from the http headers
+          responsecode = Integer.toString(hc.getResponseCode());
           hc.close();
        }
         catch (IOException ioe) {
           System.out.println("HTTPS Exception" + ioe.toString());
           PrivateData.debugmsg = "Error. Can't make https connections.";     
         }
+      //make sure we're getting a valid response from google  
+      if ("200".equals(responsecode)) {
+            try {
+                JSONObject json = new JSONObject(httpcontent);
+                responsecode = json.toString();
+            } catch (JSONException ex) {
+                responsecode = ex.toString();
+            }
+      }
 
-        // check if we get a code 200 OK from foursquare, means token is valid
-//        try {
-//            JSONObject json = new JSONObject(httpcontent);
-//            JSONObject meta = new JSONObject(json.getString("meta"));
-//
-//            PrivateData.debugmsg = meta.getString("code");
-//
-//            if ("200".equals(meta.getString("code"))) {
-//                valid = true;
-//            }
-//        }
-//        catch (JSONException joe) {
-//            System.out.println("JSON Decode Exception" + joe.toString());
-//            PrivateData.debugmsg = "Error. Can't decode JSON";
-//        }    
-        */
-        location = postData.toString();
-        return(location);
+
+        return(responsecode);
     }
     
 }
