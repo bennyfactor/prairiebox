@@ -23,8 +23,14 @@ public class cellid {
     public static String mcc = System.getProperty("com.sonyericsson.net.cmcc");
     public static String mnc = System.getProperty("com.sonyericsson.net.cmnc");
     
+    
+    /**
+     * Returns String[] of lat, long, accuracy of position based on current cell tower
+     * 
+     * @return [0]=latitude, [1]=longitude, [2]=accuracy
+     */
     public static String getlocation() throws UnsupportedEncodingException {
-        String location;
+        String location = null;
         String responsecode = "999";
         
         
@@ -78,16 +84,20 @@ public class cellid {
         }
       //make sure we're getting a valid response from google  
       if ("200".equals(responsecode)) {
-            try {
-                JSONObject json = new JSONObject(httpcontent);
-                responsecode = json.toString();
-            } catch (JSONException ex) {
-                responsecode = ex.toString();
-            }
+           // try {
+                //JSONObject json = new JSONObject(httpcontent);
+                //JSONObject cellloc = new JSONObject(json.getString("location"));
+//                location[0] = cellloc.getString("lat");
+//                location[1] = cellloc.getString("lng");
+//                location[2] = json.getString("accuracy");
+                location = httpcontent;
+            //} //catch (JSONException ex) {
+               // PrivateData.debugmsg = ex.toString();
+            //}
       }
+      if (location == null ? httpcontent != null : !location.equals(httpcontent)) {location="error";}
 
-
-        return(responsecode);
+        return(location);
     }
     
 }

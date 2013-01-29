@@ -14,6 +14,8 @@ import javax.microedition.location.LocationListener;
 import javax.microedition.location.LocationProvider;
 import javax.microedition.location.QualifiedCoordinates;
 import javax.microedition.midlet.*;
+import org.json.me.JSONException;
+import org.json.me.JSONObject;
 import org.netbeans.microedition.lcdui.SplashScreen;
 
 
@@ -26,6 +28,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     private boolean midletPaused = false;
     public String[][] recentCheckins;
     public String[][] nearbyVenues;
+    public String[] cellloc;
     public static String lat, lon, alt, hac, vac;
     
     private LocationProvider locationProvider = null;
@@ -1040,13 +1043,30 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         public void run() {
             boolean quit = false;
             try {
-                Thread.sleep(2000);
-                stringItem.setText(cellid.getlocation());
+                //Thread.sleep(2000);
+                JSONObject json = new JSONObject(cellid.getlocation());
+                JSONObject cellloc = new JSONObject(json.getString("location"));
+                //set variables with gotten coodirnates
+                lat = cellloc.getString("lat");
+                lon = cellloc.getString("lng");
+                alt = "0";
+                hac = json.getString("accuracy");
+                vac = json.getString("accuracy");
+                info.setText(
+                        "Waiting on GPS... \n" 
+                    + "Lat: " + lat + "\n"
+                    + "Lon: " + lon + "\n"
+                    + "Alt: " + "unknown" + "\n"
+                    + "Acc: " + hac + "\n"
+                    + "via Cell Tower" + "\n" 
+                    );
+            } catch (JSONException ex) {
+                ex.printStackTrace();
             } catch (UnsupportedEncodingException ex) {
                 ex.printStackTrace();
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
+            }// catch (InterruptedException ex) {
+            //    ex.printStackTrace();
+            //}
         }
 
 
