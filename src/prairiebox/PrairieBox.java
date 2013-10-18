@@ -63,6 +63,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     private Command okCommand;
     private Command checkinCommand;
     private Command exitCommand3;
+    private Image logo160;
 //</editor-fold>//GEN-END:|fields|0|
 
     /**
@@ -240,6 +241,13 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         } else if (displayable == splashScreen) {
             if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|25|16-preAction
                 // write pre-action user code here
+                if (PrivateData.OAUTH_TOKEN != null) {
+                    //start parallel thread to get check-in data
+                    splashScreen.setText("Please wait");
+                    getrecent getrecentcheckins = new getrecent();
+                    getrecentcheckins.start();
+
+                }
                 //start parallel thread to get GPS data
                 new Thread() {
                     public void run() {
@@ -247,9 +255,12 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
 
                     }
                 }.start();
-                switchDisplayable(null, getAuthScreen());//GEN-LINE:|7-commandAction|26|16-postAction
+                if (PrivateData.OAUTH_TOKEN != null) {
+                    switchDisplayable(null, getRecentCheckinsList());
+                } else {
+                    switchDisplayable(null, getAuthScreen());//GEN-LINE:|7-commandAction|26|16-postAction
                 // write post-action user code here
-
+                }
             }//GEN-BEGIN:|7-commandAction|27|7-postCommandAction
         }//GEN-END:|7-commandAction|27|7-postCommandAction
         // write post-action user code here
@@ -270,8 +281,14 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
             splashScreen = new SplashScreen(getDisplay());//GEN-BEGIN:|14-getter|1|14-postInit
             splashScreen.setTitle("Prairie Box");
             splashScreen.setCommandListener(this);
+            splashScreen.setImage(getLogo160());
             splashScreen.setText("version " + getAppProperty("MIDlet-Version"));//GEN-END:|14-getter|1|14-postInit
             // write post-init user code here
+            if (PrivateData.OAUTH_TOKEN != null) {
+            //splashScreen.setText("Found saved token");
+
+            }
+
         }//GEN-BEGIN:|14-getter|2|
         return splashScreen;
     }
@@ -558,7 +575,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         if (recentCheckinsList == null) {//GEN-END:|103-getter|0|103-preInit
             // write pre-init user code here
             recentCheckinsList = new List("recent checkins", Choice.IMPLICIT);//GEN-BEGIN:|103-getter|1|103-postInit
-            recentCheckinsList.append("burp \n another burp \n two burps", null);
+            recentCheckinsList.append("Awaiting response from Foursquare", null);
             recentCheckinsList.addCommand(getExitCommand3());
             recentCheckinsList.addCommand(getCheckinCommand());
             recentCheckinsList.setCommandListener(this);
@@ -585,7 +602,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         // enter pre-action user code here
         String __selectedString = getRecentCheckinsList().getString(getRecentCheckinsList().getSelectedIndex());//GEN-BEGIN:|103-action|1|123-preAction
         if (__selectedString != null) {
-            if (__selectedString.equals("burp \n another burp \n two burps")) {//GEN-END:|103-action|1|123-preAction
+            if (__selectedString.equals("Awaiting response from Foursquare")) {//GEN-END:|103-action|1|123-preAction
                 // write pre-action user code here
 //GEN-LINE:|103-action|2|123-postAction
                 // write post-action user code here
@@ -922,6 +939,28 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     }
 //</editor-fold>//GEN-END:|160-getter|2|
 
+//<editor-fold defaultstate="collapsed" desc=" Generated Getter: logo160 ">//GEN-BEGIN:|177-getter|0|177-preInit
+    /**
+     * Returns an initialized instance of logo160 component.
+     *
+     * @return the initialized component instance
+     */
+    public Image getLogo160() {
+        if (logo160 == null) {//GEN-END:|177-getter|0|177-preInit
+            // write pre-init user code here
+            try {//GEN-BEGIN:|177-getter|1|177-@java.io.IOException
+                logo160 = Image.createImage("/assets/images/prairiebox_160.png");
+            } catch (java.io.IOException e) {//GEN-END:|177-getter|1|177-@java.io.IOException
+                e.printStackTrace();
+            }//GEN-LINE:|177-getter|2|177-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|177-getter|3|
+        return logo160;
+    }
+//</editor-fold>//GEN-END:|177-getter|3|
+
+
+
 
 
 
@@ -1074,6 +1113,28 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         
     }
 
+ 
+        
+    
+    public class getrecent extends Thread {
+
+        public void run() {
+            recentCheckins =  Foursquare.recentCheckins(PrivateData.OAUTH_TOKEN, 10);
+            if (recentCheckinsList != null) {
+                recentCheckinsList.deleteAll();
+                for (int i = 0; i < recentCheckins.length; i++) {
+                    String[] thisCheckin = recentCheckins[i];
+                    recentCheckinsList.append( thisCheckin[1] + "\n at " + thisCheckin[2] + "\n " + thisCheckin[3] + "\n " + thisCheckin[4], null );
+                }
+            }
+            switchDisplayable(null, getRecentCheckinsList());
+
+            return;
+        }
+
+
+        
+    }
 
     
 }

@@ -8,8 +8,8 @@
                     <Property name="start" typeID="C#MobileDeviceStartEventSource" value="R3"/>
                     <Property name="resume" typeID="C#MobileDeviceResumeEventSource" value="R4"/>
                     <Component componentID="3" typeID="C#MobileDeviceStartEventSource">
-                        <Property name="eventHandler" typeID="C#EventHandler" value="R21"/>
-                        <Component componentID="21" typeID="C#SwitchDisplayableEventHandler">
+                        <Property name="eventHandler" typeID="C#EventHandler" value="R164"/>
+                        <Component componentID="164" typeID="C#SwitchDisplayableEventHandler">
                             <Property name="eventSource" typeID="C#EventSource" value="R3"/>
                             <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R14"/>
                         </Component>
@@ -104,12 +104,13 @@
                     <Property name="commands" typeID="1C#CommandEventSource" value="A1:3_R16"/>
                     <Property name="title" typeID="Pjava.lang.String" value="VPrairie Box"/>
                     <Property name="commandListener" typeID="C#CommandListener" value="R7"/>
+                    <Property name="image" typeID="Cjavax.microedition.lcdui.Image" value="R177"/>
                     <Property name="text" typeID="Pjava.lang.String" value="U&quot;version &quot; + getAppProperty(&quot;MIDlet-Version&quot;)"/>
                     <Component componentID="16" typeID="C#SplashScreenDismissCommandEventSource">
-                        <Property name="eventHandler" typeID="C#EventHandler" value="R84"/>
+                        <Property name="eventHandler" typeID="C#EventHandler" value="R175"/>
                         <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R14"/>
                         <Property name="command" typeID="Cjavax.microedition.lcdui.Command" value="R15"/>
-                        <Component componentID="84" typeID="C#SwitchDisplayableEventHandler">
+                        <Component componentID="175" typeID="C#SwitchDisplayableEventHandler">
                             <Property name="eventSource" typeID="C#EventSource" value="R16"/>
                             <Property name="displayable" typeID="Cjavax.microedition.lcdui.Displayable" value="R23"/>
                         </Component>
@@ -279,7 +280,7 @@
                         </Component>
                     </Component>
                     <Component componentID="123" typeID="C#ListElementEventSource">
-                        <Property name="string" typeID="Pjava.lang.String" value="U&quot;burp \n another burp \n two burps&quot;"/>
+                        <Property name="string" typeID="Pjava.lang.String" value="U&quot;Awaiting response from Foursquare&quot;"/>
                     </Component>
                     <Component componentID="121" typeID="C#CommandEventSource">
                         <Property name="eventHandler" typeID="C#EventHandler" value="R122"/>
@@ -449,14 +450,26 @@
                     <Property name="label" typeID="Pjava.lang.String" value="VExit"/>
                     <Property name="type" typeID="Pint" value="V7"/>
                 </Component>
+                <Component componentID="173" typeID="C#PIMBrowserOpenCommand">
+                    <Property name="label" typeID="Pjava.lang.String" value="VOpen"/>
+                    <Property name="type" typeID="Pint" value="V4"/>
+                    <Property name="priority" typeID="Pint" value="V0"/>
+                    <Property name="ordinary" typeID="Pboolean" value="Vfalse"/>
+                </Component>
             </Component>
-            <Component componentID="12" typeID="C#ResourcesCategory"/>
+            <Component componentID="12" typeID="C#ResourcesCategory">
+                <Component componentID="177" typeID="Cjavax.microedition.lcdui.Image">
+                    <Property name="instanceName" typeID="Pjava.lang.String" value="Vlogo160"/>
+                    <Property name="codeGenerated" typeID="Pboolean" value="Vtrue"/>
+                    <Property name="resourcePath" typeID="Pjava.lang.String" value="V/assets/images/prairiebox_160.png"/>
+                </Component>
+            </Component>
             <Component componentID="13" typeID="C#DatabindingCategory"/>
         </Component>
     </Document>
     <FlowScene version="1">
         <Node componentID="2" descriptorID="componentNode2" x="115" y="19"/>
-        <Node componentID="14" descriptorID="componentNode14" x="5" y="359"/>
+        <Node componentID="14" descriptorID="componentNode14" x="-5" y="306"/>
         <Node componentID="124" descriptorID="componentNode124" x="571" y="91"/>
         <Node componentID="103" descriptorID="componentNode103" x="389" y="191"/>
         <Node componentID="132" descriptorID="componentNode132" x="898" y="179"/>
@@ -465,6 +478,6 @@
         <Node componentID="146" descriptorID="componentNode146" x="894" y="295"/>
         <Node componentID="55" descriptorID="componentNode55" x="760" y="383"/>
         <Node componentID="136" descriptorID="componentNode136" x="962" y="14"/>
-        <Node componentID="59" descriptorID="componentNode59" x="609" y="286"/>
+        <Node componentID="59" descriptorID="componentNode59" x="101" y="502"/>
     </FlowScene>
 </VisualDesign>
