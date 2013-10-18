@@ -191,21 +191,13 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
             }//GEN-BEGIN:|7-commandAction|9|129-preAction
         } else if (displayable == currentLocation) {
             if (command == exitCommand1) {//GEN-END:|7-commandAction|9|129-preAction
-                // write pre-action user code here
-                //kill off GPS data thread
-                new Thread() {
-                    public void run() {
-                       
-                        locationProvider.setLocationListener(null, -1, -1, -1);
-                        
-                    }
-                }.start();	  
+                // write pre-action user code here	  
                 exitMIDlet();//GEN-LINE:|7-commandAction|10|129-postAction
                 // write post-action user code here
             } else if (command == okCommand1) {//GEN-LINE:|7-commandAction|11|144-preAction
                 // write pre-action user code here
                 stringItem.setText("Processing");
-                nearbyVenues = Foursquare.nearbyVenues(PrivateData.OAUTH_TOKEN, lat, lon, alt, hac, vac, 5);
+                nearbyVenues = Foursquare.nearbyVenues(PrivateData.OAUTH_TOKEN, lat, lon, alt, hac, vac, 20);
                 stringItem.setText("finished");
                 stringItem.setText(nearbyVenues[0][0] + PrivateData.debugmsg);
                 switchDisplayable(null, getNearbyVenuesList());//GEN-LINE:|7-commandAction|12|144-postAction
@@ -234,13 +226,6 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                 // write post-action user code here
             } else if (command == checkinCommand) {//GEN-LINE:|7-commandAction|21|126-preAction
                 // write pre-action user code here
-                //start parallel thread to get GPS data
-                new Thread() {
-                    public void run() {
-                        locationProvider.setLocationListener(PrairieBox.this, 1, -1, -1);                       
-
-                    }
-                }.start();
                 switchDisplayable(null, getCurrentLocation());//GEN-LINE:|7-commandAction|22|126-postAction
                 // write post-action user code here
                 //start parallel thread to get google pseudogps data
@@ -255,8 +240,16 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         } else if (displayable == splashScreen) {
             if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|25|16-preAction
                 // write pre-action user code here
+                //start parallel thread to get GPS data
+                new Thread() {
+                    public void run() {
+                        locationProvider.setLocationListener(PrairieBox.this, 1, -1, -1);                       
+
+                    }
+                }.start();
                 switchDisplayable(null, getAuthScreen());//GEN-LINE:|7-commandAction|26|16-postAction
                 // write post-action user code here
+
             }//GEN-BEGIN:|7-commandAction|27|7-postCommandAction
         }//GEN-END:|7-commandAction|27|7-postCommandAction
         // write post-action user code here
@@ -533,7 +526,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         tokenValid = Foursquare.isTokenValid(PrivateData.OAUTH_TOKEN);
         if (tokenValid) {//GEN-LINE:|59-if|1|60-preAction
             // write pre-action user code here
-            recentCheckins =  Foursquare.recentCheckins(PrivateData.OAUTH_TOKEN, 5);
+            recentCheckins =  Foursquare.recentCheckins(PrivateData.OAUTH_TOKEN, 10);
             switchDisplayable(null, getRecentCheckinsList());//GEN-LINE:|59-if|2|60-postAction
             // write post-action user code here
             tokenField.setString(token);
@@ -951,6 +944,14 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
      * Exits MIDlet.
      */
     public void exitMIDlet() {
+        //kill off GPS data thread
+        new Thread() {
+            public void run() {
+
+                locationProvider.setLocationListener(null, -1, -1, -1);
+
+            }
+        }.start();
         switchDisplayable(null, null);
         destroyApp(true);
         notifyDestroyed();
@@ -1046,10 +1047,10 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                 //Thread.sleep(2000);
                 JSONObject json = new JSONObject(cellid.getlocation());
                 JSONObject cellloc = new JSONObject(json.getString("location"));
-                //set variables with gotten coodirnates
+                //set variables with gotten coordinates
                 lat = cellloc.getString("lat");
                 lon = cellloc.getString("lng");
-                alt = "0";
+                alt = "0"; 
                 hac = json.getString("accuracy");
                 vac = json.getString("accuracy");
                 info.setText(
@@ -1061,7 +1062,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                     + "via Cell Tower" + "\n" 
                     );
             } catch (JSONException ex) {
-                ex.printStackTrace();
+                ex.printStackTrace(); 
             } catch (UnsupportedEncodingException ex) {
                 ex.printStackTrace();
             }// catch (InterruptedException ex) {
