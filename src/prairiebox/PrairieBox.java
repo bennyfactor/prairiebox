@@ -775,16 +775,17 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
                  }
                  }//GEN-END:|136-action|3|136-postAction
         */  }
-            
-        // enter post-action user code here
-         int __selectedIndex = getNearbyVenuesList().getSelectedIndex();
-        // //pseudocode: nearbyVenues[__selectedIndex][1] = venueid for lookup
-        // //https://api.foursquare.com/v2/checkins/add?v=20120321&venueId=VENUE_ID&broadcast=public,twitter&ll=LAT%2CLON&llAcc=HAC&alt=ALT&altAcc=VAC
-        nearbyVenuesList.setTitle("processing");
-        checkInString.setText(Foursquare.Checkin(PrivateData.OAUTH_TOKEN, nearbyVenues[__selectedIndex][1], ""/*shout*/, lat, lon).toString());
-        //nearbyVenuesList.append(PrivateData.debugmsg, null);
-         nearbyVenuesList.setTitle("processed");
-         switchDisplayable(null, getCheckedIn());
+
+            // enter post-action user code here
+            int __selectedIndex = getNearbyVenuesList().getSelectedIndex();
+            // //pseudocode: nearbyVenues[__selectedIndex][1] = venueid for lookup
+            // //https://api.foursquare.com/v2/checkins/add?v=20120321&venueId=VENUE_ID&broadcast=public,twitter&ll=LAT%2CLON&llAcc=HAC&alt=ALT&altAcc=VAC
+            nearbyVenuesList.setTitle("processing");
+            //checkInString.setText(Foursquare.Checkin(PrivateData.OAUTH_TOKEN, nearbyVenues[__selectedIndex][1], ""/*shout*/, lat, lon).toString());
+            //nearbyVenuesList.append(PrivateData.debugmsg, null);
+            switchDisplayable(null, getCheckedIn());
+            getcheckinnotification sendcheckin = new getcheckinnotification(nearbyVenues[__selectedIndex][1]);
+            new Thread(sendcheckin).start();
         }
     }//GEN-BEGIN:|136-action|4|
 //</editor-fold>//GEN-END:|136-action|4|
@@ -932,7 +933,7 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
     public StringItem getCheckInString() {
         if (checkInString == null) {//GEN-END:|160-getter|0|160-preInit
             // write pre-init user code here
-            checkInString = new StringItem("Reply \n", null);//GEN-LINE:|160-getter|1|160-postInit
+            checkInString = new StringItem("Reply", "Please wait...");//GEN-LINE:|160-getter|1|160-postInit
             // write post-init user code here
         }//GEN-BEGIN:|160-getter|2|
         return checkInString;
@@ -1136,5 +1137,34 @@ public class PrairieBox extends MIDlet implements CommandListener, ItemCommandLi
         
     }
 
+    public class getcheckinnotification implements Runnable {
+            
+        private volatile String venue;
+
+        public getcheckinnotification(String venue){
+            this.venue = venue;
+        }
+
+        public void run() {
+            String[][] response;
+            String responsestring;
+            response = Foursquare.Checkin(PrivateData.OAUTH_TOKEN, venue, ""/*shout*/, lat, lon);
+            
+            //Add checkin message to response string
+            responsestring = "\n" + response[0][0];
+            
+            //add total poinst scored to string
+            responsestring = responsestring + "\n Checkin total: " + response[1][0] + " points";
+ 
+            for (int j = 0; j < response[2].length; j++) {
+                responsestring = responsestring + "\n" + response[2][j];
+            }
+            checkInString.setText(responsestring);
+            return;
+        }
+
+
+        
+    }
     
 }
