@@ -261,6 +261,13 @@ exitMIDlet();//GEN-LINE:|7-commandAction|28|121-postAction
 } else if (displayable == splashScreen) {
     if (command == SplashScreen.DISMISS_COMMAND) {//GEN-END:|7-commandAction|29|16-preAction
                 // write pre-action user code here
+                if (PrivateData.OAUTH_TOKEN != null) {
+                    //start parallel thread to get check-in data
+                    splashScreen.setText("Please wait");
+                    getrecent getrecentcheckins = new getrecent();
+                    getrecentcheckins.start();
+
+                }
                 //start parallel thread to get GPS data
                 new Thread() {
                     public void run() {
@@ -295,8 +302,14 @@ exitMIDlet();//GEN-LINE:|7-commandAction|28|121-postAction
 splashScreen = new SplashScreen(getDisplay());//GEN-BEGIN:|14-getter|1|14-postInit
             splashScreen.setTitle("Prairie Box");
             splashScreen.setCommandListener(this);
+            splashScreen.setImage(getLogo160());
             splashScreen.setText("version " + getAppProperty("MIDlet-Version"));//GEN-END:|14-getter|1|14-postInit
             // write post-init user code here
+            if (PrivateData.OAUTH_TOKEN != null) {
+            //splashScreen.setText("Found saved token");
+
+            }
+
         }//GEN-BEGIN:|14-getter|2|
         return splashScreen;
     }
@@ -627,7 +640,7 @@ recentCheckinsList = new List("recent checkins", Choice.IMPLICIT);//GEN-BEGIN:|1
         // enter pre-action user code here
 String __selectedString = getRecentCheckinsList().getString(getRecentCheckinsList().getSelectedIndex());//GEN-BEGIN:|103-action|1|123-preAction
         if (__selectedString != null) {
-            if (__selectedString.equals("burp \n another burp \n two burps")) {//GEN-END:|103-action|1|123-preAction
+            if (__selectedString.equals("Awaiting response from Foursquare")) {//GEN-END:|103-action|1|123-preAction
                 // write pre-action user code here
 //GEN-LINE:|103-action|2|123-postAction
                 // write post-action user code here
@@ -1241,6 +1254,10 @@ backCommand = new Command("Back", Command.BACK, 0);//GEN-LINE:|183-getter|1|183-
         
     }
 
+ 
+        
+    
+    public class getrecent extends Thread {
 
         public void run() {
             recentCheckins =  Foursquare.recentCheckins(PrivateData.OAUTH_TOKEN, 10);
