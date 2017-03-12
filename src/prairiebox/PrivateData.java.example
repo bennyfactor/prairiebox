@@ -13,7 +13,7 @@ public class PrivateData {
    public static final String OAUTH_CONSUMER_KEY = "0";
    public static final String OAUTH_CONSUMER_SECRET = "0";
    public static final String REDIR_CALLBACK_URL = "http://";
-   public static final String API_VERSION = "20121020";
+   public static final String API_VERSION = "20131016";
    public static final String GOOGLE_API_KEY = "0";
    public static String OAUTH_TOKEN = "0";
 
