@@ -218,7 +218,7 @@ exitMIDlet();//GEN-LINE:|7-commandAction|14|129-postAction
 } else if (command == okCommand1) {//GEN-LINE:|7-commandAction|15|144-preAction
                 // write pre-action user code here
                 stringItem.setText("Processing");
-                nearbyVenues = Foursquare.nearbyVenues(PrivateData.OAUTH_TOKEN, lat, lon, alt, hac, vac, 20);
+                nearbyVenues = Foursquare.nearbyVenues(PrivateData.OAUTH_TOKEN, lat, lon, alt, hac, vac, 30);
                 stringItem.setText("finished");
                 stringItem.setText(nearbyVenues[0][0] + PrivateData.debugmsg);
         switchDisplayable(null, getNearbyVenuesList());//GEN-LINE:|7-commandAction|16|144-postAction

@@ -252,7 +252,12 @@ public class Foursquare {
     public static String httpSconnector(String url, String RequestMethod) {
         return(null);
     }
-
+    
+    /**
+     * returns String[][] of post-checkin info for (String token, String venueid, String shout, String lat, String lon)
+     * 
+     * @return String[][] of post-checkin info in array after passing venue, etc to check into
+     */
     static String[][] Checkin(String token, String venueid, String shout, String lat, String lon) {
             String[][] checkin;
     checkin = new String[3][6];
