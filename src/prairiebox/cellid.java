@@ -18,16 +18,46 @@ import org.json.me.JSONObject;
  * @author benlamb
  */
 public class cellid {
-    public static int cellid = Integer.parseInt(System.getProperty("com.sonyericsson.net.cellid").toString(),16);
-    public static int lac    = Integer.parseInt(System.getProperty("com.sonyericsson.net.lac").toString(),16);
+    public static int cellid = hexToDec(System.getProperty("com.sonyericsson.net.cellid"));
+    public static int lac    = hexToDec(System.getProperty("com.sonyericsson.net.lac"));
     public static String mcc = System.getProperty("com.sonyericsson.net.cmcc");
     public static String mnc = System.getProperty("com.sonyericsson.net.cmnc");
     
+  
+     /**
+     * Does the power function, which is not a part of JavaME
+     * Only works for integer powers (which is fine, this is just a subfunction
+     * of converting hex to dec)
+     * @return x^y
+     */
+    private static int pow( int x, int y)  {
+    int z = x; 
+    for( int i = 1; i < y; i++ )z *= x;
+    return z;
+    }
+
+      /**
+     * Converts a hexidecimal number of type String to a decimal int
+     * @return decimal
+     */   
+    private static int hexToDec(String hexNumber) {
+	int power = 0;
+	int decimal = 0;
+	hexNumber = hexNumber.toUpperCase();
+	int length = hexNumber.length();
+	String hexCode = "0123456789ABCDEF";
+	for (int index = 0; index < length; index++) {
+		char digit = hexNumber.charAt(length - index - 1);
+		decimal = decimal + hexCode.indexOf(digit) * pow(16, power++);
+	}
+	return decimal;
+    }
     
     /**
      * Returns String[] of lat, long, accuracy of position based on current cell tower
      * 
      * @return [0]=latitude, [1]=longitude, [2]=accuracy
+     * @throws java.io.UnsupportedEncodingException
      */
     public static String getlocation() throws UnsupportedEncodingException {
         String location = null;
